@@ -8,13 +8,21 @@ function populateMainView() {
   xhr.addEventListener('load', function () {
     var $mainViewImage = document.createElement('img');
     var randomInt = getRandomNumber(xhr.response.ownedNfts.length);
-    var nftData = { name: xhr.response.ownedNfts[randomInt].metadata.name, image: xhr.response.ownedNfts[randomInt].media[0].gateway };
+
+    var nftData = {
+      name: xhr.response.ownedNfts[randomInt].metadata.name,
+      image: xhr.response.ownedNfts[randomInt].media[0].gateway
+    };
+
     $mainViewImage.src = nftData.image;
     $cardImageDiv.appendChild($mainViewImage);
+
     if (nftData.name === undefined) {
       nftData.name = xhr.response.ownedNfts[randomInt].contractMetadata.symbol;
       $mainViewTitle.textContent = nftData.name;
-    } else { $mainViewTitle.textContent = nftData.name; }
+    } else {
+      $mainViewTitle.textContent = nftData.name;
+    }
   });
   xhr.send();
 }
