@@ -1,0 +1,50 @@
+.container {
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.center {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+}
+
+.column-full {
+  flex-basis: 100%;
+}
+
+.card-text {
+  padding-left: 1.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 900px;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+
+  .column-full {
+    padding: 0 0.75rem;
+    flex-basis: 50%;
+    display: flex;
+    align-items: center;
+  }
+
+  img {
+    border-radius: 2rem;
+  }
+
+  .card-text {
+    padding-left: 5rem;
+  }
+}
