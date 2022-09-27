@@ -27,15 +27,19 @@
     max-width: 900px;
   }
 
-  .row {
+  .media-row {
     display: flex;
     flex-direction: row;
+    align-items: center;
     height: 100%;
   }
 
   .column-full {
-    padding: 0 0.75rem;
     flex-basis: 50%;
+  }
+
+  .column-full-media {
+    padding: 0 0.75rem;
     display: flex;
     align-items: center;
   }
@@ -45,6 +49,7 @@
   }
 
   .card-text {
-    padding-left: 5rem;
+    padding: 0;
+    text-align: center;
   }
 }
