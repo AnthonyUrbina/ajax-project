@@ -12,6 +12,7 @@ p {
 
 i {
   font-size: 39px;
+  cursor: pointer;
 }
 
 .header-border {
@@ -42,17 +43,15 @@ i {
   border-radius: 1.5rem;
   padding: 0.5rem;
   background-color: white;
-  border-color: lightgray;
   border: none;
   outline: none;
   border-top: none;
-  height: 56px;
   width: 56px;
-  text-align: center;
   margin-top: 1rem;
   margin-left: 0.75rem;
   margin-right: 0.75rem;
   box-shadow: 0 8px 14px -4px rgb(0 0 0 / 40%);
+  margin-bottom: 1rem;
 }
 
 .like {
@@ -61,7 +60,6 @@ i {
 
 .superlike {
   color: #5fe0fc;
-  overflow: hidden;
 }
 
 .dislike {

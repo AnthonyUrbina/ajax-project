@@ -1,5 +1,6 @@
 var $mainViewTitle = document.querySelector('.card-text > p');
 var $cardImageDiv = document.querySelector('.card');
+var $buttonContainer = document.querySelector('.button-container');
 
 function populateMainView() {
   var xhr = new XMLHttpRequest();
@@ -11,7 +12,8 @@ function populateMainView() {
 
     var nftData = {
       name: xhr.response.ownedNfts[randomInt].metadata.name,
-      image: xhr.response.ownedNfts[randomInt].media[0].gateway
+      image: xhr.response.ownedNfts[randomInt].media[0].gateway,
+      collectionName: xhr.response.ownedNfts[randomInt].contractMetadata.name
     };
 
     $mainViewImage.src = nftData.image;
@@ -23,6 +25,7 @@ function populateMainView() {
     } else {
       $mainViewTitle.textContent = nftData.name;
     }
+    data.NFTvisible.push(nftData);
   });
   xhr.send();
 }
@@ -33,4 +36,46 @@ function getRandomNumber(collectionLength) {
   return integer;
 }
 
+function handleClick(event) {
+  if (event.target.matches('.fa-solid')) {
+    var collectionData = {
+      collectionName: data.NFTvisible[0].collectionName,
+      collectionPhoto: null,
+      likes: null,
+      dislikes: null
+    };
+
+    var singleNFTData = {
+      name: data.NFTvisible[0].name,
+      data: data.NFTvisible[0].image
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://api.opensea.io/api/v1/collection/' + collectionData.collectionName.toLowerCase());
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', function () {
+      collectionData.collectionPhoto = xhr.response.collection.image_url;
+    });
+    xhr.send();
+
+    if (Object.entries(data.ratingsInfo).length === 0) {
+      data.ratingsInfo[collectionData.collectionName] = collectionData;
+    }
+
+    for (var key in data.ratingsInfo) {
+      if (key !== data.NFTvisible[0].collectionName) {
+        data.ratingsInfo.push(collectionData);
+      } else if (event.target.matches('.fa-heart')) {
+        data.ratingsInfo[key].likes++;
+      } else if (event.target.matches('.fa-star')) {
+        data.superliked.push(singleNFTData);
+      } else if (event.target.matches('.fa-thumbs-down')) {
+        data.ratingsInfo[key].dislikes++;
+      }
+    }
+  }
+
+}
+
 window.addEventListener('DOMContentLoaded', populateMainView);
+$buttonContainer.addEventListener('click', handleClick);
