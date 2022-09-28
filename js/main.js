@@ -60,21 +60,13 @@ function handleClick(event) {
 
     if (data.ratingsInfo[collectionData.collectionName] === undefined) {
       data.ratingsInfo[collectionData.collectionName] = collectionData;
-      if (event.target.matches('.fa-heart')) {
-        data.ratingsInfo[collectionData.collectionName].likes++;
-      } else if (event.target.matches('.fa-star')) {
-        data.superliked.push(singleNFTData);
-      } else if (event.target.matches('.fa-thumbs-down')) {
-        data.ratingsInfo[collectionData.collectionName].dislikes++;
-      }
-    } else {
-      if (event.target.matches('.fa-heart')) {
-        data.ratingsInfo[collectionData.collectionName].likes++;
-      } else if (event.target.matches('.fa-star')) {
-        data.superliked.push(singleNFTData);
-      } else if (event.target.matches('.fa-thumbs-down')) {
-        data.ratingsInfo[collectionData.collectionName].dislikes++;
-      }
+    }
+    if (event.target.matches('.fa-heart')) {
+      data.ratingsInfo[collectionData.collectionName].likes++;
+    } else if (event.target.matches('.fa-star')) {
+      data.superliked.push(singleNFTData);
+    } else if (event.target.matches('.fa-thumbs-down')) {
+      data.ratingsInfo[collectionData.collectionName].dislikes++;
     }
   }
 
