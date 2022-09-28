@@ -22,6 +22,10 @@
   padding-left: 1.5rem;
 }
 
+.button-layout {
+  display: flex;
+}
+
 @media screen and (min-width: 768px) {
   .container {
     max-width: 900px;

@@ -10,6 +10,11 @@ p {
   font-size: 18px;
 }
 
+i {
+  font-size: 39px;
+  cursor: pointer;
+}
+
 .header-border {
   border-bottom: solid 2px #e5e5e5;
 }
@@ -32,4 +37,31 @@ p {
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
   border-width: 0;
+}
+
+.button-1-of-3 {
+  border-radius: 1.5rem;
+  padding: 0.5rem;
+  background-color: white;
+  border: none;
+  outline: none;
+  border-top: none;
+  width: 56px;
+  margin-top: 1rem;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  box-shadow: 0 8px 14px -4px rgb(0 0 0 / 40%);
+  margin-bottom: 1rem;
+}
+
+.like {
+  color: #39ae36;
+}
+
+.superlike {
+  color: #5fe0fc;
+}
+
+.dislike {
+  color: #ea5a5a;
 }
