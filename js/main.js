@@ -58,19 +58,22 @@ function handleClick(event) {
     });
     xhr.send();
 
-    if (Object.entries(data.ratingsInfo).length === 0) {
+    if (data.ratingsInfo[collectionData.collectionName] === undefined) {
       data.ratingsInfo[collectionData.collectionName] = collectionData;
-    }
-
-    for (var key in data.ratingsInfo) {
-      if (key !== data.NFTvisible[0].collectionName) {
-        data.ratingsInfo.push(collectionData);
-      } else if (event.target.matches('.fa-heart')) {
-        data.ratingsInfo[key].likes++;
+      if (event.target.matches('.fa-heart')) {
+        data.ratingsInfo[collectionData.collectionName].likes++;
       } else if (event.target.matches('.fa-star')) {
         data.superliked.push(singleNFTData);
       } else if (event.target.matches('.fa-thumbs-down')) {
-        data.ratingsInfo[key].dislikes++;
+        data.ratingsInfo[collectionData.collectionName].dislikes++;
+      }
+    } else {
+      if (event.target.matches('.fa-heart')) {
+        data.ratingsInfo[collectionData.collectionName].likes++;
+      } else if (event.target.matches('.fa-star')) {
+        data.superliked.push(singleNFTData);
+      } else if (event.target.matches('.fa-thumbs-down')) {
+        data.ratingsInfo[collectionData.collectionName].dislikes++;
       }
     }
   }
