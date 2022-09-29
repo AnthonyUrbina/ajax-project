@@ -1,7 +1,9 @@
 /* exported data */
 
 var data = {
-  NFTvisible: [],
+  starting: {},
+  nftVisible: null,
   ratingsInfo: {},
-  superliked: []
+  superliked: [],
+  nftList: null
 };
