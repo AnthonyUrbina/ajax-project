@@ -16,11 +16,6 @@ function showFirstNFT() {
       collectionName: xhr.response.ownedNfts[randomInt].contractMetadata.name
     };
 
-    var locationData = {
-      index: randomInt,
-      collectionLength: xhr.response.ownedNfts.length
-    };
-
     $mainViewImage.src = nftData.image;
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
@@ -32,7 +27,6 @@ function showFirstNFT() {
     data.nftVisible = (nftData);
 
     data.starting.nftInfo = nftData;
-    data.starting.location = locationData;
   });
   xhr.send();
 }
