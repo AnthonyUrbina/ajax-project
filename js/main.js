@@ -22,7 +22,14 @@ function showFirstNFT() {
     var nftData = {
       name: xhr.response.ownedNfts[randomInt].metadata.name,
       image: xhr.response.ownedNfts[randomInt].media[0].gateway,
-      collectionName: xhr.response.ownedNfts[randomInt].contractMetadata.name
+      collectionName: xhr.response.ownedNfts[randomInt].contractMetadata.name,
+      hasBeenRated: false
+    };
+
+    var collectionData = {
+      collectionName: nftData.collectionName,
+      likes: null,
+      dislikes: null
     };
     $mainViewImage.src = nftData.image;
     $cardImageDiv.appendChild($mainViewImage);
@@ -33,7 +40,10 @@ function showFirstNFT() {
     data.nftVisible = null;
     data.nftVisible = (nftData);
 
-    nftData.collectionImage = getCollectionPhotoURL(randomInt);
+    if (data.ratingsInfo[collectionData.collectionName] === undefined) {
+      getCollectionPhotoURL(randomInt);
+      data.ratingsInfo[collectionData.collectionName] = collectionData;
+    }
 
     data.nftList.splice(randomInt, 1);
   });
@@ -53,7 +63,6 @@ function showNewNFT() {
       var nftName = data.nftList[i].title;
       var nftImage = data.nftList[i].media[0].gateway;
       var parentCollectionName = data.nftList[i].contractMetadata.name;
-      getCollectionPhotoURL(i);
 
       $mainViewImage.src = nftImage;
       $mainViewTitle.textContent = nftName;
@@ -61,11 +70,23 @@ function showNewNFT() {
       nftData.name = nftName;
       nftData.image = nftImage;
       nftData.collectionName = parentCollectionName;
+      nftData.hasBeenRated = false;
 
       data.nftVisible = null;
       data.nftVisible = (nftData);
+
+      var collectionData = {
+        collectionName: nftData.collectionName,
+        likes: null,
+        dislikes: null
+      };
+      if (data.ratingsInfo[collectionData.collectionName] === undefined) {
+        getCollectionPhotoURL(i);
+        data.ratingsInfo[collectionData.collectionName] = collectionData;
+      }
       data.nftList.splice(i, 1);
     }
+
   });
   xhr.send();
 
@@ -75,37 +96,35 @@ function handleRatingClick(event) {
   if (event.target.matches('.fa-solid')) {
     var collectionData = {
       collectionName: data.nftVisible.collectionName,
-      collectionPhoto: data.nftVisible.collectionImage,
       likes: null,
       dislikes: null
     };
 
-    if (data.ratingsInfo[collectionData.collectionName] === undefined) {
-      data.ratingsInfo[collectionData.collectionName] = collectionData;
-    }
-    if (data.nftList.length >= 0) {
+    if (data.nftVisible.hasBeenRated === false && data.nftVisible !== null) {
+      showNewNFT();
       if (event.target.matches('.fa-heart')) {
         appendMatchCardLi(collectionData);
       } else if (event.target.matches('.fa-star')) {
         appendMatchCardLi(collectionData);
         data.superliked.push(data.nftVisible);
+        data.ratingsInfo[collectionData.collectionName].superlikes++;
       } else if (event.target.matches('.fa-thumbs-down')) {
         data.ratingsInfo[collectionData.collectionName].dislikes++;
       }
+      data.nftVisible.hasBeenRated = true;
+    }
+
+    if (data.nftList.length === 0) {
+      var matchInfo = findMatch(data);
+      $modalText.textContent = ['You and ' + matchInfo.collectionName + ' have liked each other'];
+      $modalImage.src = data.collectionPhotos[matchInfo.collectionName];
+      $modalImageDiv.appendChild($modalImage);
+      $modal.className = 'modal-box';
+      $overlay.className = 'overlay';
     }
 
     if (data.ratingsInfo[collectionData.collectionName].likes !== null) {
       $miniMessageIcon.className = '';
-    }
-    if (data.nftList.length === 0) {
-      var matchInfo = findMatch(data);
-      $modalText.textContent = ['You and ' + matchInfo.collectionName + ' have liked each other'];
-      $modalImage.src = matchInfo.collectionPhoto;
-      $modalImageDiv.appendChild($modalImage);
-      $modal.className = 'modal-box';
-      $overlay.className = 'overlay';
-    } else {
-      showNewNFT();
     }
   }
 }
@@ -204,7 +223,7 @@ function createMatchCardLi(key) {
           'div',
           { class: 'card-wrapper' },
           [generateDomTree('img',
-            { class: 'card-image', src: data.nftVisible.collectionImage }),
+            { class: 'card-image', src: data.collectionPhotos[data.nftVisible.collectionName] }),
           generateDomTree(
             'div',
             { class: 'card-text-wrapper' },
@@ -224,7 +243,7 @@ function getCollectionPhotoURL(i) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     var parentCollectionPhoto = xhr.response.collection.image_url;
-    data.nftVisible.collectionImage = parentCollectionPhoto;
+    data.collectionPhotos[data.nftVisible.collectionName] = parentCollectionPhoto;
   });
   xhr.send();
 }
