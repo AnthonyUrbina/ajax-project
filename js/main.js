@@ -128,7 +128,7 @@ function handleRatingClick(event) {
 
     if (data.ratingsInfo[collectionData.collectionName].likes !== null) {
       $miniMessageIconMatch.className = '';
-      $miniMessageIconSuperlikes = '';
+      $miniMessageIconSuperlikes.className = '';
     }
   }
 }
