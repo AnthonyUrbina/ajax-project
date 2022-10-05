@@ -5,10 +5,12 @@ var $modal = document.querySelector('.modal-box');
 var $overlay = document.querySelector('.overlay');
 var $modalText = document.querySelector('.modal-p');
 var $modalImageDiv = document.querySelector('.modal-image');
-var $miniMessageIcon = document.querySelector('#mini-message-icon');
+var $miniMessageIconMatch = document.querySelector('#mini-message-icon-match');
+var $miniMessageIconSuperlikes = document.querySelector('#mini-message-icon-superlikes');
 var $mainViewImage = document.createElement('img');
 var $modalImage = document.createElement('img');
-var $ul = document.querySelector('ul');
+var $matchesUl = document.querySelector('.matches-ul');
+var $superlikesUl = document.querySelector('.superlikes-ul');
 var $dataViewNodeList = document.querySelectorAll('[data-view]');
 
 var newCollection;
@@ -108,6 +110,7 @@ function handleRatingClick(event) {
         appendMatchCardLi(collectionData);
         data.superliked.push(data.nftVisible);
         data.ratingsInfo[collectionData.collectionName].superlikes++;
+        appendSuperlikesCardLi(collectionData);
       } else if (event.target.matches('.fa-thumbs-down')) {
         data.ratingsInfo[collectionData.collectionName].dislikes++;
       }
@@ -124,7 +127,8 @@ function handleRatingClick(event) {
     }
 
     if (data.ratingsInfo[collectionData.collectionName].likes !== null) {
-      $miniMessageIcon.className = '';
+      $miniMessageIconMatch.className = '';
+      $miniMessageIconSuperlikes.className = '';
     }
   }
 }
@@ -135,31 +139,35 @@ function handleSwapClick(event) {
       if ($dataViewNodeList[i].dataset.view !== 'matches') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'matches') {
-        var className = $dataViewNodeList[i].className;
-        $dataViewNodeList[i].className = className.replace(/ hidden/g, '');
+        $dataViewNodeList[i].classList.remove('hidden');
       }
     } else if (event.target.matches('.match-back-arrow')) {
       if ($dataViewNodeList[i].dataset.view !== 'swipe') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'swipe') {
-        className = $dataViewNodeList[i].className;
-        $dataViewNodeList[i].className = className.replace(/ hidden/g, '');
+        $dataViewNodeList[i].classList.remove('hidden');
       }
     } else if (event.target.matches('#continue-playing')) {
       if ($dataViewNodeList[i].dataset.view !== 'swipe') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'swipe') {
-        className = $dataViewNodeList[i].className;
-        $dataViewNodeList[i].className = className.replace(/ hidden/g, '');
+        $dataViewNodeList[i].classList.remove('hidden');
       }
       if (i === $dataViewNodeList.length - 1) {
         var $liNodeList = document.querySelectorAll('li');
         for (var j = 0; j < $liNodeList.length; j++) {
-          $ul.removeChild($liNodeList[j]);
+          $matchesUl.removeChild($liNodeList[j]);
         }
-        $miniMessageIcon.className = 'hidden';
+        $miniMessageIconMatch.className = 'hidden';
+        $miniMessageIconSuperlikes.className = 'hidden';
         data.ratingsInfo = {};
         showFirstNFT();
+      }
+    } else if (event.target.matches('.fa-crown')) {
+      if ($dataViewNodeList[i].dataset.view !== 'superlikes') {
+        $dataViewNodeList[i].className += ' hidden';
+      } else if ($dataViewNodeList[i].dataset.view === 'superlikes') {
+        $dataViewNodeList[i].classList.remove('hidden');
       }
     }
   }
@@ -256,14 +264,14 @@ function appendMatchCardLi(collectionData) {
       if ($liTextContent === data.nftVisible.collectionName) {
         var $li = createMatchCardLi(data.nftVisible.collectionName);
         data.ratingsInfo[collectionData.collectionName].likes++;
-        $ul.replaceChild($li, $liNodeList[i]);
+        $matchesUl.replaceChild($li, $liNodeList[i]);
       }
     }
 
   } else {
     $li = createMatchCardLi(data.nftVisible.collectionName);
     data.ratingsInfo[collectionData.collectionName].likes++;
-    $ul.appendChild($li);
+    $matchesUl.appendChild($li);
   }
 }
 
@@ -279,4 +287,30 @@ function chooseWallet() {
   container.addresses = addresses;
   data.owner.splice(randomInt, 1);
   return container;
+}
+function appendSuperlikesCardLi(collectionData) {
+  var $li = createSuperlikesCardLi(data.nftVisible);
+  $superlikesUl.appendChild($li);
+}
+
+function createSuperlikesCardLi(key) {
+  return generateDomTree(
+    'li',
+    {},
+    [generateDomTree(
+      'div',
+      { class: 'row' },
+      [generateDomTree(
+        'div',
+        { class: 'column-full column-full-media-wrapper card-wrapper-padding' },
+        [generateDomTree(
+          'div',
+          { class: 'card-wrapper' },
+          [generateDomTree('img',
+            { class: 'card-image', src: data.nftVisible.image }),
+          generateDomTree(
+            'div',
+            { class: 'card-text-wrapper' },
+            [generateDomTree('p', { textContent: data.nftVisible.name })])])]
+      )])]);
 }

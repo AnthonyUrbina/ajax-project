@@ -24,11 +24,10 @@
         </div>
         <div class="message-icon-box">
           <a><i class="fa-solid fa-comment header-icons message-icon"></i></a>
-          <a id="mini-message-icon" class="hidden"><i class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
+          <a id="mini-message-icon-match" class="hidden"><i class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
         </div>
       </div>
     </div>
-
     <div class="row header-border hidden" data-view="matches">
       <div class="column-full center header-box">
         <div>
@@ -43,7 +42,20 @@
         </div>
       </div>
     </div>
-
+    <div class="row header-border hidden" data-view="superlikes">
+      <div class="column-full center header-box">
+        <div>
+          <a><i class="fa-solid fa-left-long header-icons match-back-arrow"></i></i></a>
+        </div>
+        <div class="header-h1">
+          <h1>Superlikes</h1>
+        </div>
+        <div class="message-icon-box">
+          <a><i class="fa-solid fa-comment header-icons message-icon"></i></a>
+          <a id="mini-message-icon-superlikes" class="hidden"><i class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
+        </div>
+      </div>
+    </div>
   </header>
   <main>
     <div class="container container-style" data-view="swipe">
@@ -92,7 +104,11 @@
     <div class="overlay hidden" data-view="modal"></div>
 
     <div class="container container-wrap hidden" data-view="matches">
-      <ul class="container container-wrap">
+      <ul class="container container-wrap matches-ul">
+      </ul>
+    </div>
+    <div class="container container-wrap hidden" data-view="superlikes">
+      <ul class="container container-wrap superlikes-ul">
       </ul>
     </div>
   </main>
