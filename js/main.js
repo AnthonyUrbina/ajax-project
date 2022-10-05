@@ -139,22 +139,19 @@ function handleSwapClick(event) {
       if ($dataViewNodeList[i].dataset.view !== 'matches') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'matches') {
-        var className = $dataViewNodeList[i].className;
-        $dataViewNodeList[i].className = className.replace(/ hidden/g, '');
+        $dataViewNodeList[i].classList.remove('hidden');
       }
     } else if (event.target.matches('.match-back-arrow')) {
       if ($dataViewNodeList[i].dataset.view !== 'swipe') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'swipe') {
-        className = $dataViewNodeList[i].className;
-        $dataViewNodeList[i].className = className.replace(/ hidden/g, '');
+        $dataViewNodeList[i].classList.remove('hidden');
       }
     } else if (event.target.matches('#continue-playing')) {
       if ($dataViewNodeList[i].dataset.view !== 'swipe') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'swipe') {
-        className = $dataViewNodeList[i].className;
-        $dataViewNodeList[i].className = className.replace(/ hidden/g, '');
+        $dataViewNodeList[i].classList.remove('hidden');
       }
       if (i === $dataViewNodeList.length - 1) {
         var $liNodeList = document.querySelectorAll('li');
@@ -170,8 +167,7 @@ function handleSwapClick(event) {
       if ($dataViewNodeList[i].dataset.view !== 'superlikes') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'superlikes') {
-        className = $dataViewNodeList[i].className;
-        $dataViewNodeList[i].className = className.replace(/ hidden/g, '');
+        $dataViewNodeList[i].classList.remove('hidden');
       }
     }
   }
