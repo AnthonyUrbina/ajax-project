@@ -174,7 +174,7 @@ function handleSwapClick(event) {
 }
 window.addEventListener('DOMContentLoaded', showFirstNFT);
 $buttonContainer.addEventListener('click', handleRatingClick);
-window.addEventListener('click', handleSwapClick);
+document.addEventListener('click', handleSwapClick);
 
 function getRandomNumber(collectionLength) {
   var randomNumber = Math.random() * collectionLength;
