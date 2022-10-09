@@ -1,6 +1,10 @@
 ul {
-  margin: none;
-  padding: none;
+  padding: 0;
+}
+
+h1 {
+  margin-top: 1.5rem;
+  margin-bottom: 0;
 }
 
 .container {
@@ -18,21 +22,8 @@ ul {
   flex-direction: column;
 }
 
-.column-full {
-  flex-basis: 100%;
-}
-
-.card-holder {
-  margin: 0 auto;
-  max-width: 100%;
-}
-
 .card-text {
   padding-left: 1.5rem;
-}
-
-.button-layout {
-  display: flex;
 }
 
 .message-icon-box {
@@ -56,7 +47,6 @@ ul {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgb(41 41 41 / 98%);
 }
 
 .modal-box {
@@ -66,26 +56,19 @@ ul {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 5;
-  color: white;
+  z-index: 2;
 }
 
 .card-wrapper {
   display: flex;
   margin-top: 1rem;
-  width: 100%;
 }
 
 .card-image {
   width: 122px;
   height: 160px;
-  object-fit: fill;
-  border: 0 transparent;
   border-radius: 2rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin: 0.5rem;
 }
 
 .card-wrapper-padding {
@@ -149,6 +132,40 @@ ul.container.container-wrap {
   margin-bottom: 1rem;
 }
 
+.container-style {
+  width: 90%;
+  border-radius: 2rem;
+  margin-top: 1rem;
+  height: 78vh;
+}
+
+.card img {
+  width: 100%;
+  height: 67vh;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  border-width: 0;
+}
+
+.button-1-of-3 {
+  border-radius: 1.5rem;
+  padding: 0.5rem;
+  border: none;
+  width: 56px;
+  margin-top: 1rem;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.modal-buttons {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 266px;
+  height: 53px;
+  margin-top: 24px;
+}
+
 @media screen and (min-width: 768px) {
   .container {
     max-width: 900px;
@@ -167,8 +184,6 @@ ul.container.container-wrap {
 
   .column-full-media {
     padding: 0 0.75rem;
-    display: flex;
-    align-items: center;
   }
 
   img {
@@ -187,10 +202,6 @@ ul.container.container-wrap {
   .header-box h1 {
     padding-left: 10rem;
     padding-right: 10rem;
-  }
-
-  .column-full-media-wrapper {
-    display: flex;
   }
 
   .container-wrap {
@@ -217,6 +228,5 @@ ul.container.container-wrap {
   .container-wrap {
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
 }
