@@ -174,7 +174,7 @@ function handleSwapClick(event) {
 }
 window.addEventListener('DOMContentLoaded', showFirstNFT);
 $buttonContainer.addEventListener('click', handleRatingClick);
-window.addEventListener('click', handleSwapClick);
+document.addEventListener('click', handleSwapClick);
 
 function getRandomNumber(collectionLength) {
   var randomNumber = Math.random() * collectionLength;
@@ -311,6 +311,6 @@ function createSuperlikesCardLi(key) {
           generateDomTree(
             'div',
             { class: 'card-text-wrapper' },
-            [generateDomTree('p', { textContent: data.nftVisible.name })])])]
+            [generateDomTree('p', { textContent: data.nftVisible.name + 'VeeFriends Series' })])])]
       )])]);
 }
