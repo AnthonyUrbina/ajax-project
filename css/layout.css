@@ -68,6 +68,7 @@ h1 {
   width: 122px;
   height: 160px;
   margin: 0.5rem;
+  border-radius: 2rem;
 }
 
 .card-wrapper-padding {
@@ -170,6 +171,10 @@ ul.container.container-wrap {
     max-width: 900px;
   }
 
+  ul {
+    width: 77%;
+  }
+
   .media-row {
     display: flex;
     flex-direction: row;
@@ -206,7 +211,6 @@ ul.container.container-wrap {
   .container-wrap {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
   }
 
   .card-wrapper-padding {
@@ -222,10 +226,12 @@ ul.container.container-wrap {
 @media screen and (min-width: 500px) and (max-width: 768px) {
   .card-text-wrapper {
     margin-right: 1rem;
+    width: 100%;
   }
 
-  .container-wrap {
-    display: flex;
-    flex-direction: column;
+  .card-image {
+    object-fit: fill;
+    height: 25.5vh;
+    width: 40%;
   }
 }

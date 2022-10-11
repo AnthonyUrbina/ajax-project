@@ -311,6 +311,6 @@ function createSuperlikesCardLi(key) {
           generateDomTree(
             'div',
             { class: 'card-text-wrapper' },
-            [generateDomTree('p', { textContent: data.nftVisible.name + 'VeeFriends Series' })])])]
+            [generateDomTree('p', { textContent: data.nftVisible.name })])])]
       )])]);
 }
