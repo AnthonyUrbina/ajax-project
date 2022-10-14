@@ -166,13 +166,27 @@ ul.container.container-wrap {
   margin-top: 24px;
 }
 
+.column-one-fourth {
+  flex-basis: 25%;
+}
+
+.row-display-reset {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.column-one-half {
+  flex-basis: 50%;
+}
+
 @media screen and (min-width: 768px) {
   .container {
     max-width: 900px;
   }
 
-  ul {
-    width: 77%;
+  .column-one-half {
+    flex-basis: 12%;
   }
 
   .media-row {
@@ -197,15 +211,6 @@ ul.container.container-wrap {
   .card-text {
     padding: 0;
     text-align: center;
-  }
-
-  .header-box {
-    justify-content: center;
-  }
-
-  .header-box h1 {
-    padding-left: 10rem;
-    padding-right: 10rem;
   }
 
   .container-wrap {
