@@ -186,7 +186,7 @@ ul.container.container-wrap {
   }
 
   .column-one-half {
-    flex-basis: 12%;
+    flex-basis: 17%;
   }
 
   .media-row {
@@ -198,6 +198,10 @@ ul.container.container-wrap {
 
   .column-full {
     flex-basis: 50%;
+  }
+
+  .column-one-fourth {
+    flex-basis: 20%;
   }
 
   .column-full-media {
@@ -216,6 +220,7 @@ ul.container.container-wrap {
   .container-wrap {
     display: flex;
     flex-wrap: wrap;
+    width: 693px;
   }
 
   .card-wrapper-padding {
