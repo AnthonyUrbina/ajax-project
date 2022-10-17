@@ -12,14 +12,17 @@ var $modalImage = document.createElement('img');
 var $matchesUl = document.querySelector('.matches-ul');
 var $superlikesUl = document.querySelector('.superlikes-ul');
 var $dataViewNodeList = document.querySelectorAll('[data-view]');
+var $cssLoader = document.querySelector('.lds-heart');
 
 var newCollection;
 function showFirstNFT() {
+  cssLoaderActivate();
   newCollection = chooseWallet();
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner + newCollection.addresses);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    cssLoaderActivate();
     var randomInt = getRandomNumber(xhr.response.ownedNfts.length);
     var nftData = {
       name: xhr.response.ownedNfts[randomInt].metadata.name,
@@ -42,7 +45,7 @@ function showFirstNFT() {
     data.nftVisible = null;
     data.nftVisible = (nftData);
 
-    if (data.ratingsInfo[collectionData.collectionName] === undefined) {
+    if (!data.ratingsInfo[collectionData.collectionName]) {
       getCollectionPhotoURL(randomInt);
       data.ratingsInfo[collectionData.collectionName] = collectionData;
     }
@@ -53,11 +56,12 @@ function showFirstNFT() {
 }
 
 function showNewNFT() {
+  cssLoaderActivate();
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-
+    cssLoaderActivate();
     if (data.nftList.length > 0) {
       var nftData = {};
       var i = getRandomNumber(data.nftList.length);
@@ -82,7 +86,7 @@ function showNewNFT() {
         likes: null,
         dislikes: null
       };
-      if (data.ratingsInfo[collectionData.collectionName] === undefined) {
+      if (!data.ratingsInfo[collectionData.collectionName]) {
         getCollectionPhotoURL(i);
         data.ratingsInfo[collectionData.collectionName] = collectionData;
       }
@@ -313,4 +317,12 @@ function createSuperlikesCardLi(key) {
             { class: 'card-text-wrapper' },
             [generateDomTree('p', { textContent: data.nftVisible.name })])])]
       )])]);
+}
+
+function cssLoaderActivate() {
+  if ($cssLoader.className === 'lds-heart') {
+    $cssLoader.className = 'lds-heart hidden';
+  } else if ($cssLoader.className === 'lds-heart hidden') {
+    $cssLoader.className = 'lds-heart';
+  }
 }

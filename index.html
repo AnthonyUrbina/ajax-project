@@ -13,7 +13,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <header class="">
+  <header>
     <div class="row header-border center row-display-reset" data-view="swipe">
       <div class="column-one-fourth center">
         <a><i class="fa-solid fa-crown header-icons hidden"></i></a>
@@ -27,7 +27,7 @@
         <div class="message-icon-box">
           <a><i class="fa-solid fa-comment header-icons message-icon"></i></a>
           <a id="mini-message-icon-match" class="hidden"><i
-            class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
+              class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
         </div>
       </div>
     </div>
@@ -69,7 +69,11 @@
     <div class="container container-style" data-view="swipe">
       <div class="row media-row">
         <div class="column-full column-full-media">
-          <div class="card"></div>
+          <div class="card">
+            <div class="lds-heart hidden">
+              <div></div>
+            </div>
+          </div>
         </div>
         <div class="column-full">
           <div class="card-text">

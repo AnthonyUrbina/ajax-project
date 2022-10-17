@@ -93,6 +93,10 @@ h1 {
   top: 0;
 }
 
+.card {
+  position: relative;
+}
+
 .container.container-style.hidden {
   display: none;
 }
@@ -114,6 +118,10 @@ h1 {
 }
 
 .row-header-border.modal.hidden {
+  display: none;
+}
+
+.lds-heart.hidden {
   display: none;
 }
 
