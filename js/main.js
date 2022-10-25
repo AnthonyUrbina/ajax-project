@@ -12,17 +12,15 @@ var $modalImage = document.createElement('img');
 var $matchesUl = document.querySelector('.matches-ul');
 var $superlikesUl = document.querySelector('.superlikes-ul');
 var $dataViewNodeList = document.querySelectorAll('[data-view]');
-var $cssLoader = document.querySelector('.lds-heart');
-
+var $cssLoader = document.querySelector('.lds-spinner');
 var newCollection;
+
 function showFirstNFT() {
-  cssLoaderActivate();
   newCollection = chooseWallet();
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner + newCollection.addresses);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    cssLoaderActivate();
     var randomInt = getRandomNumber(xhr.response.ownedNfts.length);
     var nftData = {
       name: xhr.response.ownedNfts[randomInt].metadata.name,
@@ -36,6 +34,7 @@ function showFirstNFT() {
       likes: null,
       dislikes: null
     };
+
     $mainViewImage.src = nftData.image;
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
@@ -46,7 +45,7 @@ function showFirstNFT() {
     data.nftVisible = (nftData);
 
     if (!data.ratingsInfo[collectionData.collectionName]) {
-      getCollectionPhotoURL(randomInt);
+      throttle(getCollectionPhotoURL(randomInt), 3000);
       data.ratingsInfo[collectionData.collectionName] = collectionData;
     }
 
@@ -56,19 +55,18 @@ function showFirstNFT() {
 }
 
 function showNewNFT() {
-  cssLoaderActivate();
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    cssLoaderActivate();
+
     if (data.nftList.length > 0) {
       var nftData = {};
-      var i = getRandomNumber(data.nftList.length);
+      var randomInt = getRandomNumber(data.nftList.length);
 
-      var nftName = data.nftList[i].title;
-      var nftImage = data.nftList[i].media[0].gateway;
-      var parentCollectionName = data.nftList[i].contractMetadata.name;
+      var nftName = data.nftList[randomInt].title;
+      var nftImage = data.nftList[randomInt].media[0].gateway;
+      var parentCollectionName = data.nftList[randomInt].contractMetadata.name;
 
       $mainViewImage.src = nftImage;
       $mainViewTitle.textContent = nftName;
@@ -86,19 +84,20 @@ function showNewNFT() {
         likes: null,
         dislikes: null
       };
+
       if (!data.ratingsInfo[collectionData.collectionName]) {
-        getCollectionPhotoURL(i);
+        throttle(getCollectionPhotoURL(randomInt), 3000);
         data.ratingsInfo[collectionData.collectionName] = collectionData;
       }
-      data.nftList.splice(i, 1);
+      data.nftList.splice(randomInt, 1);
     }
 
   });
   xhr.send();
-
 }
 
-function handleRatingClick(event) {
+var handleRatingClick = throttle(function handleRatingClick(event) {
+  cssLoaderActivate();
   if (event.target.matches('.fa-solid')) {
     var collectionData = {
       collectionName: data.nftVisible.collectionName,
@@ -135,6 +134,25 @@ function handleRatingClick(event) {
       $miniMessageIconSuperlikes.className = '';
     }
   }
+}, 2000);
+
+function appendMatchCardLi(collectionData) {
+  if (parseInt(data.ratingsInfo[collectionData.collectionName].likes) >= 1) {
+    var $liNodeList = document.querySelectorAll('li');
+    for (var i = 0; i < $liNodeList.length; i++) {
+      var $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
+      if ($liTextContent === data.nftVisible.collectionName) {
+        var $li = createMatchCardLi(data.nftVisible.collectionName);
+        data.ratingsInfo[collectionData.collectionName].likes++;
+        $matchesUl.replaceChild($li, $liNodeList[i]);
+      }
+    }
+
+  } else {
+    $li = createMatchCardLi(data.nftVisible.collectionName);
+    data.ratingsInfo[collectionData.collectionName].likes++;
+    $matchesUl.appendChild($li);
+  }
 }
 
 function handleSwapClick(event) {
@@ -160,7 +178,11 @@ function handleSwapClick(event) {
       if (i === $dataViewNodeList.length - 1) {
         var $liNodeList = document.querySelectorAll('li');
         for (var j = 0; j < $liNodeList.length; j++) {
-          $matchesUl.removeChild($liNodeList[j]);
+          if (j < ($liNodeList.length - data.superliked.length)) {
+            $matchesUl.removeChild($liNodeList[j]);
+          } else {
+            $superlikesUl.removeChild($liNodeList[j]);
+          }
         }
         $miniMessageIconMatch.className = 'hidden';
         $miniMessageIconSuperlikes.className = 'hidden';
@@ -246,37 +268,37 @@ function createMatchCardLi(key) {
                 { textContent: data.ratingsInfo[key].likes + 1 }),
               generateDomTree('i', { class: 'fa-solid fa-heart' })]), generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })])])]
       )])]);
+
 }
 
-function getCollectionPhotoURL(i) {
+function getCollectionPhotoURL(randomInt) {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.opensea.io/api/v1/asset_contract/' + data.nftList[i].contract.address);
+  xhr.open('GET', 'https://api.opensea.io/api/v1/asset_contract/' + data.nftList[randomInt].contract.address);
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    var parentCollectionPhoto = xhr.response.collection.image_url;
+    var parentCollectionPhoto = xhr.response.image_url;
+    if (xhr.status === 429) {
+      parentCollectionPhoto = 'images/unavail.jpeg';
+    }
     data.collectionPhotos[data.nftVisible.collectionName] = parentCollectionPhoto;
   });
   xhr.send();
 }
 
-function appendMatchCardLi(collectionData) {
-  if (parseInt(data.ratingsInfo[collectionData.collectionName].likes) >= 1) {
-    var $liNodeList = document.querySelectorAll('li');
-    for (var i = 0; i < $liNodeList.length; i++) {
-      var $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
-      if ($liTextContent === data.nftVisible.collectionName) {
-        var $li = createMatchCardLi(data.nftVisible.collectionName);
-        data.ratingsInfo[collectionData.collectionName].likes++;
-        $matchesUl.replaceChild($li, $liNodeList[i]);
-      }
-    }
+function throttle(callback, limit) {
+  var waiting = false;
+  return function () {
+    if (!waiting) {
+      callback.apply(this, arguments);
+      waiting = true;
+      setTimeout(function () {
+        cssLoaderActivate();
 
-  } else {
-    $li = createMatchCardLi(data.nftVisible.collectionName);
-    data.ratingsInfo[collectionData.collectionName].likes++;
-    $matchesUl.appendChild($li);
-  }
+        waiting = false;
+      }, limit);
+    }
+  };
 }
 
 function chooseWallet() {
@@ -320,9 +342,9 @@ function createSuperlikesCardLi(key) {
 }
 
 function cssLoaderActivate() {
-  if ($cssLoader.className === 'lds-heart') {
-    $cssLoader.className = 'lds-heart hidden';
-  } else if ($cssLoader.className === 'lds-heart hidden') {
-    $cssLoader.className = 'lds-heart';
+  if ($cssLoader.className === 'lds-spinner') {
+    $cssLoader.className = 'lds-spinner hidden';
+  } else if ($cssLoader.className === 'lds-spinner hidden') {
+    $cssLoader.className = 'lds-spinner';
   }
 }
