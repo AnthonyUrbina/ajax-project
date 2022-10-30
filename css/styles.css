@@ -100,3 +100,11 @@ ul {
 .modal-box {
   color: white;
 }
+
+.lds-spinner.hidden {
+  display: none;
+}
+
+.lds-spinner div::after {
+  background: #ea5a5a;
+}

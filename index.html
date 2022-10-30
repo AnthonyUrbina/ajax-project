@@ -14,45 +14,53 @@
 </head>
 <body>
   <header>
-    <div class="row header-border" data-view="swipe">
-      <div class="column-full center header-box">
-        <div>
-          <a><i class="fa-solid fa-crown header-icons hidden"></i></a>
-        </div>
+    <div class="row header-border center row-display-reset" data-view="swipe">
+      <div class="column-one-fourth center">
+        <a><i class="fa-solid fa-crown header-icons hidden"></i></a>
+      </div>
+      <div class="column-one-half center">
         <div class="header-h1">
           <h1>NFTinder</h1>
         </div>
+      </div>
+      <div class="column-one-fourth center">
         <div class="message-icon-box">
           <a><i class="fa-solid fa-comment header-icons message-icon"></i></a>
-          <a id="mini-message-icon-match" class="hidden"><i class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
+          <a id="mini-message-icon-match" class="hidden"><i
+              class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
         </div>
       </div>
     </div>
-    <div class="row header-border hidden" data-view="matches">
-      <div class="column-full center header-box">
-        <div>
-          <a><i class="fa-solid fa-left-long header-icons match-back-arrow"></i></i></a>
-        </div>
-        <div class="header-h1">
-          <h1>Matches</h1>
-        </div>
-        <div class="message-icon-box hide-icon">
-          <a><i class="fa-solid fa-comment header-icons message-icon"></i></a>
-          <a class="hidden"><i class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
-        </div>
+    <div class="row header-border center row-display-reset hidden" data-view="superlikes">
+      <div class="column-one-fourth center">
+        <a><i class="fa-solid fa-left-long header-icons match-back-arrow"></i></i></a>
       </div>
-    </div>
-    <div class="row header-border hidden" data-view="superlikes">
-      <div class="column-full center header-box">
-        <div>
-          <a><i class="fa-solid fa-left-long header-icons match-back-arrow"></i></i></a>
-        </div>
+      <div class="column-one-half center">
         <div class="header-h1">
           <h1>Superlikes</h1>
         </div>
+      </div>
+      <div class="column-one-fourth center">
         <div class="message-icon-box">
           <a><i class="fa-solid fa-comment header-icons message-icon"></i></a>
-          <a id="mini-message-icon-superlikes" class="hidden"><i class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
+          <a id="mini-message-icon-superlikes" class="hidden"><i
+              class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="row header-border center row-display-reset hidden" data-view="matches">
+      <div class="column-one-fourth center">
+        <a><i class="fa-solid fa-left-long header-icons match-back-arrow"></i></i></a>
+      </div>
+      <div class="column-one-half center">
+        <div class="header-h1">
+          <h1>Matches</h1>
+        </div>
+      </div>
+      <div class="column-one-fourth center">
+        <div class="message-icon-box hide-icon">
+          <a><i class="fa-solid fa-comment header-icons message-icon"></i></a>
+          <a><i class="fa-solid fa-comment header-icons mini-message-icon message-icon"></i></a>
         </div>
       </div>
     </div>
@@ -61,7 +69,21 @@
     <div class="container container-style" data-view="swipe">
       <div class="row media-row">
         <div class="column-full column-full-media">
-          <div class="card"></div>
+          <div class="card">
+            <div class="lds-spinner hidden">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div></div>
         </div>
         <div class="column-full">
           <div class="card-text">
