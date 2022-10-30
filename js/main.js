@@ -45,7 +45,7 @@ function showFirstNFT() {
     data.nftVisible = (nftData);
 
     if (!data.ratingsInfo[collectionData.collectionName]) {
-      throttle(getCollectionPhotoURL(randomInt), 3000);
+      getCollectionPhotoURL(randomInt);
       data.ratingsInfo[collectionData.collectionName] = collectionData;
     }
 
