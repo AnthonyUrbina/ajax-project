@@ -101,6 +101,11 @@ h1 {
 
 .card {
   position: relative;
+  height: 67.65vh;
+}
+
+.height {
+  height: 100%;
 }
 
 .container.container-style.hidden {
@@ -289,6 +294,10 @@ ul.container.container-wrap {
   100% {
     opacity: 0;
   }
+}
+
+.col-spinner {
+  position: relative;
 }
 
 @media screen and (min-width: 768px) {
