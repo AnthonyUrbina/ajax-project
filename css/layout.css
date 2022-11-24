@@ -59,6 +59,12 @@ h1 {
   z-index: 2;
 }
 
+.modal-box img {
+  width: 103px;
+  height: 103px;
+  border-radius: 5rem;
+}
+
 .card-wrapper {
   display: flex;
   margin-top: 1rem;
