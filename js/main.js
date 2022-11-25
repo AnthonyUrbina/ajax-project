@@ -16,11 +16,13 @@ var $cssLoader = document.querySelector('.lds-spinner');
 var newCollection;
 
 function showFirstNFT() {
+  cssLoaderActivate();
   newCollection = chooseWallet();
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner + newCollection.addresses);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    cssLoaderActivate();
     var randomInt = getRandomNumber(xhr.response.ownedNfts.length);
     var nftData = {
       name: xhr.response.ownedNfts[randomInt].metadata.name,
@@ -59,7 +61,6 @@ function showNewNFT() {
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-
     if (data.nftList.length > 0) {
       var nftData = {};
       var randomInt = getRandomNumber(data.nftList.length);
@@ -97,8 +98,8 @@ function showNewNFT() {
 }
 
 var handleRatingClick = throttle(function handleRatingClick(event) {
-  cssLoaderActivate();
   if (event.target.matches('.fa-solid')) {
+    cssLoaderActivate();
     var collectionData = {
       collectionName: data.nftVisible.collectionName,
       likes: null,
@@ -122,8 +123,12 @@ var handleRatingClick = throttle(function handleRatingClick(event) {
 
     if (data.nftList.length === 0) {
       var matchInfo = findMatch(data);
-      $modalText.textContent = ['You and ' + matchInfo.collectionName + ' have liked each other'];
-      $modalImage.src = data.collectionPhotos[matchInfo.collectionName];
+      var src = 'images/unavail.jpeg';
+      if (data.collectionPhotos[matchInfo.collectionName]) {
+        src = data.collectionPhotos[matchInfo.collectionName];
+      }
+      $modalText.textContent = ['You and ' + matchInfo.collectionName + ' have liked each other.'];
+      $modalImage.src = src;
       $modalImageDiv.appendChild($modalImage);
       $modal.className = 'modal-box';
       $overlay.className = 'overlay';
@@ -147,7 +152,6 @@ function appendMatchCardLi(collectionData) {
         $matchesUl.replaceChild($li, $liNodeList[i]);
       }
     }
-
   } else {
     $li = createMatchCardLi(data.nftVisible.collectionName);
     data.ratingsInfo[collectionData.collectionName].likes++;
@@ -244,6 +248,10 @@ function generateDomTree(tagName, attributes, children) {
 }
 
 function createMatchCardLi(key) {
+  var src = 'images/unavail.jpeg';
+  if (data.collectionPhotos[data.nftVisible.collectionName]) {
+    src = data.collectionPhotos[data.nftVisible.collectionName];
+  }
   return generateDomTree(
     'li',
     {},
@@ -257,7 +265,7 @@ function createMatchCardLi(key) {
           'div',
           { class: 'card-wrapper' },
           [generateDomTree('img',
-            { class: 'card-image', src: data.collectionPhotos[data.nftVisible.collectionName] }),
+            { class: 'card-image', src }),
           generateDomTree(
             'div',
             { class: 'card-text-wrapper' },
@@ -294,7 +302,6 @@ function throttle(callback, limit) {
       waiting = true;
       setTimeout(function () {
         cssLoaderActivate();
-
         waiting = false;
       }, limit);
     }
@@ -320,6 +327,10 @@ function appendSuperlikesCardLi(collectionData) {
 }
 
 function createSuperlikesCardLi(key) {
+  var src = 'images/unavail.jpeg';
+  if (data.nftVisible.image) {
+    src = data.nftVisible.image;
+  }
   return generateDomTree(
     'li',
     {},
@@ -333,7 +344,7 @@ function createSuperlikesCardLi(key) {
           'div',
           { class: 'card-wrapper' },
           [generateDomTree('img',
-            { class: 'card-image', src: data.nftVisible.image }),
+            { class: 'card-image', src }),
           generateDomTree(
             'div',
             { class: 'card-text-wrapper' },

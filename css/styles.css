@@ -17,6 +17,10 @@ ul {
   list-style-type: none;
 }
 
+button {
+  cursor: pointer;
+}
+
 .header-border {
   border-bottom: solid 2px #e5e5e5;
 }
@@ -49,11 +53,6 @@ ul {
   background-color: transparent;
   color: inherit;
   border-color: white;
-}
-
-.modal-box img {
-  width: 30%;
-  border-radius: 3rem;
 }
 
 .modal-box h1 {
