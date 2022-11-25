@@ -14,7 +14,7 @@ As an NFT enthusiast, I wanted to build an application that would make viewing N
 
 ## Live Demo
 
-Try the application live at [https://anthonyurbina.github.io/ajax-project/](https://anthonyurbina.github.io/ajax-project/)
+Try the application live at [https://anthonyurbina.github.io/NFTinder](https://anthonyurbina.github.io/NFTinder)
 
 ## Features
 
@@ -40,8 +40,8 @@ Try the application live at [https://anthonyurbina.github.io/ajax-project/](http
 1. Clone the repository.
 
     ```shell
-    git clone https://github.com/AnthonyUrbina/ajax-project
-    cd ajax-project
+    git clone https://github.com/AnthonyUrbina/NFTinder
+    cd NFTinder
     ```
 
-1. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
+1. Start the project. Once started you can view the application by opening http://localhost:3000/index.html in your browser.
