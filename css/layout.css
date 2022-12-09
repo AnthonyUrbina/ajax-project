@@ -1,5 +1,6 @@
 ul {
   padding: 0;
+  margin: 0;
 }
 
 h1 {
@@ -197,6 +198,14 @@ ul.container.container-wrap {
 
 .column-one-half {
   flex-basis: 50%;
+}
+
+.row.no-results {
+  width: 100%;
+}
+
+.no-results-text {
+  text-align: center;
 }
 
 .lds-spinner {

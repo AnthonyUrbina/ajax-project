@@ -13,6 +13,7 @@ var $matchesUl = document.querySelector('.matches-ul');
 var $superlikesUl = document.querySelector('.superlikes-ul');
 var $dataViewNodeList = document.querySelectorAll('[data-view]');
 var $cssLoader = document.querySelector('.lds-spinner');
+var $errorMessageNodeList = document.querySelectorAll('.no-results');
 var newCollection;
 
 function showFirstNFT() {
@@ -142,6 +143,7 @@ var handleRatingClick = throttle(function handleRatingClick(event) {
 }, 2000);
 
 function appendMatchCardLi(collectionData) {
+  displayErrorMessages('matches');
   if (parseInt(data.ratingsInfo[collectionData.collectionName].likes) >= 1) {
     var $liNodeList = document.querySelectorAll('li');
     for (var i = 0; i < $liNodeList.length; i++) {
@@ -322,6 +324,7 @@ function chooseWallet() {
   return container;
 }
 function appendSuperlikesCardLi(collectionData) {
+  displayErrorMessages('superlikes');
   var $li = createSuperlikesCardLi(data.nftVisible);
   $superlikesUl.appendChild($li);
 }
@@ -357,5 +360,13 @@ function cssLoaderActivate() {
     $cssLoader.className = 'lds-spinner hidden';
   } else if ($cssLoader.className === 'lds-spinner hidden') {
     $cssLoader.className = 'lds-spinner';
+  }
+}
+
+function displayErrorMessages(view) {
+  for (var i = 0; i < $errorMessageNodeList.length; i++) {
+    if ($errorMessageNodeList[i].classList.contains(view)) {
+      $errorMessageNodeList[i].className = 'hidden';
+    }
   }
 }
