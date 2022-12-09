@@ -111,3 +111,11 @@ button {
 .lds-spinner div::after {
   background: #ea5a5a;
 }
+
+.no-results-text {
+  text-align: center;
+}
+
+.no-results-container {
+  align-items: center;
+}
