@@ -1,7 +1,23 @@
 /* exported data */
 
-var data = {
-  nftVisible: null,
+interface NftVisible {
+  name: string,
+  hasBeenRated: boolean,
+  collectionName: string,
+  image: string
+}
+
+interface Data {
+  nftVisible: NftVisible | Record<string, never>
+  ratingsInfo: object | Record<string, never>,
+  superliked: object | [],
+  nftList: object[] | null,
+  collectionPhotos: object | Record<string, never>,
+  owner: {wallet: string, projectContract: string[]}[]
+}
+
+var data: Data = {
+  nftVisible: {},
   ratingsInfo: {},
   superliked: [],
   nftList: null,

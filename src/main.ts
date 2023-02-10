@@ -1,19 +1,26 @@
-var $mainViewTitle = document.querySelector('.card-text > p');
-var $cardImageDiv = document.querySelector('.card');
-var $buttonContainer = document.querySelector('.button-container');
-var $modal = document.querySelector('.modal-box');
-var $overlay = document.querySelector('.overlay');
-var $modalText = document.querySelector('.modal-p');
-var $modalImageDiv = document.querySelector('.modal-image');
-var $miniMessageIconMatch = document.querySelector('#mini-message-icon-match');
-var $miniMessageIconSuperlikes = document.querySelector('#mini-message-icon-superlikes');
-var $mainViewImage = document.createElement('img');
-var $modalImage = document.createElement('img');
-var $matchesUl = document.querySelector('.matches-ul');
-var $superlikesUl = document.querySelector('.superlikes-ul');
-var $dataViewNodeList = document.querySelectorAll<HTMLElement>('[data-view]');
-var $cssLoader = document.querySelector('.lds-spinner');
-var newCollection: object;
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+var $mainViewTitle = document.querySelector('.card-text > p')!;
+var $cardImageDiv = document.querySelector('.card')!;
+var $buttonContainer = document.querySelector('.button-container')!;
+var $modal = document.querySelector('.modal-box')!;
+var $overlay = document.querySelector('.overlay')!;
+var $modalText = document.querySelector('.modal-p')!;
+var $modalImageDiv = document.querySelector('.modal-image')!;
+var $miniMessageIconMatch = document.querySelector('#mini-message-icon-match')!;
+var $miniMessageIconSuperlikes = document.querySelector('#mini-message-icon-superlikes')!;
+var $mainViewImage = document.createElement('img')!;
+var $modalImage = document.createElement('img')!;
+var $matchesUl = document.querySelector('.matches-ul')!;
+var $superlikesUl = document.querySelector('.superlikes-ul')!;
+var $dataViewNodeList = document.querySelectorAll<HTMLElement>('[data-view]')!;
+var $cssLoader = document.querySelector('.lds-spinner')!;
+
+interface Container {
+  owner: string | null,
+  addresses: string | null
+}
+
+var newCollection: Container;
 
 function showFirstNFT() {
   cssLoaderActivate();
@@ -38,6 +45,7 @@ function showFirstNFT() {
     };
 
     $mainViewImage.src = nftData.image;
+    if ($cardImageDiv === null) return;
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
 
@@ -62,13 +70,12 @@ function showNewNFT() {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     if (data.nftList.length > 0) {
-      interface Data {
+      var nftData: {
         name: string,
         image: string,
         collectionName: string,
-        hasBeenRated: boolean
-      }
-      var nftData: Data;
+        hasBeenRated: boolean,
+      };
       var randomInt = getRandomNumber(data.nftList.length);
 
       var nftName = data.nftList[randomInt].title;
@@ -106,7 +113,12 @@ function showNewNFT() {
 var handleRatingClick = throttle(function handleRatingClick(event) {
   if (event.target.matches('.fa-solid')) {
     cssLoaderActivate();
-    var collectionData = {
+    interface CollectionData {
+      collectionName: string,
+      likes: number | null,
+      dislikes: number | null
+    }
+    var collectionData: CollectionData = {
       collectionName: data.nftVisible.collectionName,
       likes: null,
       dislikes: null
@@ -120,7 +132,7 @@ var handleRatingClick = throttle(function handleRatingClick(event) {
         appendMatchCardLi(collectionData);
         data.superliked.push(data.nftVisible);
         data.ratingsInfo[collectionData.collectionName].superlikes++;
-        appendSuperlikesCardLi(collectionData);
+        appendSuperlikesCardLi();
       } else if (event.target.matches('.fa-thumbs-down')) {
         data.ratingsInfo[collectionData.collectionName].dislikes++;
       }
@@ -212,7 +224,7 @@ window.addEventListener('DOMContentLoaded', showFirstNFT);
 $buttonContainer.addEventListener('click', handleRatingClick);
 document.addEventListener('click', handleSwapClick);
 
-function getRandomNumber(collectionLength) {
+function getRandomNumber(collectionLength: number) {
   var randomNumber = Math.random() * collectionLength;
   var integer = Math.floor(randomNumber);
   return integer;
@@ -314,11 +326,13 @@ function throttle(callback : Callback | Callback2, limit: number) {
 }
 
 function chooseWallet() {
-  var container = {};
+  var container: Container = {
+    owner: null,
+    addresses: null
+  };
   var addresses = '';
   var randomInt = getRandomNumber(data.owner.length);
   container.owner = data.owner[randomInt].wallet;
-
   for (var i = 0; i < data.owner[randomInt].projectContract.length; i++) {
     addresses = addresses.concat('&contractAddresses[]=' + data.owner[randomInt].projectContract[i]);
   }
@@ -326,12 +340,17 @@ function chooseWallet() {
   data.owner.splice(randomInt, 1);
   return container;
 }
-function appendSuperlikesCardLi(collectionData) {
-  var $li = createSuperlikesCardLi(data.nftVisible);
+  interface CollectionData {
+    nftVisible: object
+  }
+function appendSuperlikesCardLi() {
+  if ($superlikesUl === null) return;
+
+  var $li = createSuperlikesCardLi();
   $superlikesUl.appendChild($li);
 }
 
-function createSuperlikesCardLi(key) {
+function createSuperlikesCardLi() {
   var src = 'images/unavail.jpeg';
   if (data.nftVisible.image) {
     src = data.nftVisible.image;
@@ -358,9 +377,11 @@ function createSuperlikesCardLi(key) {
 }
 
 function cssLoaderActivate() {
+  if ($cssLoader === null) return;
   if ($cssLoader.className === 'lds-spinner') {
     $cssLoader.className = 'lds-spinner hidden';
   } else if ($cssLoader.className === 'lds-spinner hidden') {
+    if ($cssLoader === null) return;
     $cssLoader.className = 'lds-spinner';
   }
 }
