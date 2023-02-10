@@ -11,12 +11,16 @@ interface RatingsInfo {
   [key: string]: CollectionData
 }
 
+interface CollectionPhotos {
+  [key: string]: string
+}
+
 interface Data {
   nftVisible: NftVisible | Record<string, never>,
   ratingsInfo: RatingsInfo | Record<string, never>
   superliked: object | [],
   nftList: [] | Record<string, never>,
-  collectionPhotos: object | Record<string, never>,
+  collectionPhotos: CollectionPhotos | Record<string, never>,
   owner: {wallet: string, projectContract: string[]}[]
 }
 

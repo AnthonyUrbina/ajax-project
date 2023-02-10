@@ -325,9 +325,12 @@ function getCollectionPhotoURL(randomInt: number): void {
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    var parentCollectionPhoto = xhr.response.image_url;
-    if (xhr.status === 429) {
+    var parentCollectionPhoto: string | null;
+
+    if (xhr.status === 429 || xhr.status === 401) {
       parentCollectionPhoto = 'images/unavail.jpeg';
+    } else {
+      parentCollectionPhoto = xhr.response.image_url;
     }
     data.collectionPhotos[data.nftVisible.collectionName] = parentCollectionPhoto;
   });
