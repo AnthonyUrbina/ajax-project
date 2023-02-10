@@ -1,4 +1,5 @@
 'use strict';
+/* exported CollectionData */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 var $mainViewTitle = document.querySelector('.card-text > p');
 var $cardImageDiv = document.querySelector('.card');
@@ -33,16 +34,37 @@ function showFirstNFT() {
     };
     var collectionData = {
       collectionName: nftData.collectionName,
-      likes: null,
-      dislikes: null
+      likes: 0,
+      dislikes: 0
     };
     $mainViewImage.src = nftData.image;
-    if ($cardImageDiv === null) { return; }
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
-    data.nftList = (xhr.response.ownedNfts);
-    data.nftVisible = null;
-    data.nftVisible = (nftData);
+    data.nftList = xhr.response.ownedNfts.filter(nft => {
+      const { contract, title } = nft;
+      const { metadata, media, contractMetadata, address } = contract;
+      let name;
+      let collectionName;
+      let image;
+      if (metadata) {
+        name = metadata.name;
+      }
+      if (contractMetadata) {
+        collectionName = contractMetadata.name;
+      }
+      if (media) {
+        image = media[0].gateway.image;
+      }
+      const contractNFT = {
+        title,
+        name,
+        collectionName,
+        image,
+        address
+      };
+      return contractNFT;
+    });
+    data.nftVisible = nftData;
     if (!data.ratingsInfo[collectionData.collectionName]) {
       getCollectionPhotoURL(randomInt);
       data.ratingsInfo[collectionData.collectionName] = collectionData;
@@ -57,23 +79,23 @@ function showNewNFT() {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     if (data.nftList.length > 0) {
-      var nftData;
       var randomInt = getRandomNumber(data.nftList.length);
       var nftName = data.nftList[randomInt].title;
       var nftImage = data.nftList[randomInt].media[0].gateway;
       var parentCollectionName = data.nftList[randomInt].contractMetadata.name;
+      const nftData = {
+        name: nftName,
+        image: nftImage,
+        collectionName: parentCollectionName,
+        hasBeenRated: false
+      };
       $mainViewImage.src = nftImage;
       $mainViewTitle.textContent = nftName;
-      nftData.name = nftName;
-      nftData.image = nftImage;
-      nftData.collectionName = parentCollectionName;
-      nftData.hasBeenRated = false;
-      data.nftVisible = null;
-      data.nftVisible = (nftData);
+      data.nftVisible = nftData;
       var collectionData = {
         collectionName: nftData.collectionName,
-        likes: null,
-        dislikes: null
+        likes: 0,
+        dislikes: 0
       };
       if (!data.ratingsInfo[collectionData.collectionName]) {
         throttle(getCollectionPhotoURL(randomInt), 3000);

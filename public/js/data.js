@@ -4,7 +4,7 @@ var data = {
   nftVisible: {},
   ratingsInfo: {},
   superliked: [],
-  nftList: null,
+  nftList: [],
   collectionPhotos: {},
   owner: [
     { wallet: '0x5ea9681C3Ab9B5739810F8b91aE65EC47de62119', projectContract: ['0x23581767a106ae21c074b2276D25e5C3e136a68b', '0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e', '0x49cF6f5d44E70224e2E23fDcdd2C053F30aDA28B', '0xa3AEe8BcE55BEeA1951EF834b99f3Ac60d1ABeeB', '0x79FCDEF22feeD20eDDacbB2587640e45491b757f'] },

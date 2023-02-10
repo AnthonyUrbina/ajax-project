@@ -1,4 +1,6 @@
+/* exported CollectionData */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 var $mainViewTitle = document.querySelector('.card-text > p')!;
 var $cardImageDiv = document.querySelector('.card')!;
 var $buttonContainer = document.querySelector('.button-container')!;
@@ -22,6 +24,19 @@ interface Container {
 
 var newCollection: Container;
 
+interface CollectionData {
+  collectionName: string,
+  likes: number | null,
+  dislikes: number | null
+}
+
+interface NftData {
+  name: string,
+  image: string,
+  collectionName: string,
+  hasBeenRated?: boolean
+}
+
 function showFirstNFT() {
   cssLoaderActivate();
   newCollection = chooseWallet();
@@ -38,23 +53,39 @@ function showFirstNFT() {
       hasBeenRated: false
     };
 
-    var collectionData = {
+    var collectionData: CollectionData = {
       collectionName: nftData.collectionName,
-      likes: null,
-      dislikes: null
+      likes: 0,
+      dislikes: 0
     };
 
     $mainViewImage.src = nftData.image;
-    if ($cardImageDiv === null) return;
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
 
-    data.nftList = (xhr.response.ownedNfts);
+    data.nftList = xhr.response.ownedNfts.filter(nft => {
+      const { contract, title } = nft;
+      const { metadata, media, contractMetadata, address } = contract;
+      let name;
+      let collectionName;
+      let image;
+      if (metadata) { name = metadata.name; }
+      if (contractMetadata) { collectionName = contractMetadata.name; }
+      if (media) { image = media[0].gateway.image; }
 
-    data.nftVisible = null;
-    data.nftVisible = (nftData);
+      const contractNFT = {
+        title,
+        name,
+        collectionName,
+        image,
+        address
+      };
+      return contractNFT;
+    });
 
-    if (!data.ratingsInfo[collectionData.collectionName]) {
+    data.nftVisible = nftData;
+
+    if (!data.ratingsInfo[collectionData.collectionName as keyof CollectionData]) {
       getCollectionPhotoURL(randomInt);
       data.ratingsInfo[collectionData.collectionName] = collectionData;
     }
@@ -70,33 +101,33 @@ function showNewNFT() {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     if (data.nftList.length > 0) {
-      var nftData: {
-        name: string,
-        image: string,
-        collectionName: string,
-        hasBeenRated: boolean,
-      };
       var randomInt = getRandomNumber(data.nftList.length);
 
       var nftName = data.nftList[randomInt].title;
       var nftImage = data.nftList[randomInt].media[0].gateway;
       var parentCollectionName = data.nftList[randomInt].contractMetadata.name;
 
+      const nftData: NftData = {
+        name: nftName,
+        image: nftImage,
+        collectionName: parentCollectionName,
+        hasBeenRated: false
+      };
+
       $mainViewImage.src = nftImage;
       $mainViewTitle.textContent = nftName;
 
-      nftData.name = nftName;
-      nftData.image = nftImage;
-      nftData.collectionName = parentCollectionName;
-      nftData.hasBeenRated = false;
+      data.nftVisible = nftData;
 
-      data.nftVisible = null;
-      data.nftVisible = (nftData);
-
-      var collectionData = {
+      interface CollectionData {
+        collectionName: string,
+        likes: number,
+        dislikes: number
+      }
+      var collectionData: CollectionData = {
         collectionName: nftData.collectionName,
-        likes: null,
-        dislikes: null
+        likes: 0,
+        dislikes: 0
       };
 
       if (!data.ratingsInfo[collectionData.collectionName]) {
@@ -113,11 +144,6 @@ function showNewNFT() {
 var handleRatingClick = throttle(function handleRatingClick(event) {
   if (event.target.matches('.fa-solid')) {
     cssLoaderActivate();
-    interface CollectionData {
-      collectionName: string,
-      likes: number | null,
-      dislikes: number | null
-    }
     var collectionData: CollectionData = {
       collectionName: data.nftVisible.collectionName,
       likes: null,
@@ -340,9 +366,7 @@ function chooseWallet() {
   data.owner.splice(randomInt, 1);
   return container;
 }
-  interface CollectionData {
-    nftVisible: object
-  }
+
 function appendSuperlikesCardLi() {
   if ($superlikesUl === null) return;
 
