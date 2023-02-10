@@ -11,9 +11,9 @@ var $mainViewImage = document.createElement('img');
 var $modalImage = document.createElement('img');
 var $matchesUl = document.querySelector('.matches-ul');
 var $superlikesUl = document.querySelector('.superlikes-ul');
-var $dataViewNodeList = document.querySelectorAll('[data-view]');
+var $dataViewNodeList = document.querySelectorAll<HTMLElement>('[data-view]');
 var $cssLoader = document.querySelector('.lds-spinner');
-var newCollection;
+var newCollection: object;
 
 function showFirstNFT() {
   cssLoaderActivate();
@@ -62,7 +62,13 @@ function showNewNFT() {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     if (data.nftList.length > 0) {
-      var nftData = {};
+      interface Data {
+        name: string,
+        image: string,
+        collectionName: string,
+        hasBeenRated: boolean
+      }
+      var nftData: Data;
       var randomInt = getRandomNumber(data.nftList.length);
 
       var nftName = data.nftList[randomInt].title;
@@ -127,7 +133,7 @@ var handleRatingClick = throttle(function handleRatingClick(event) {
       if (data.collectionPhotos[matchInfo.collectionName]) {
         src = data.collectionPhotos[matchInfo.collectionName];
       }
-      $modalText.textContent = ['You and ' + matchInfo.collectionName + ' have liked each other.'];
+      $modalText.textContent = 'You and ' + matchInfo.collectionName + ' have liked each other.';
       $modalImage.src = src;
       $modalImageDiv.appendChild($modalImage);
       $modal.className = 'modal-box';
@@ -229,7 +235,13 @@ function findMatch(data) {
   return container;
 }
 
-function generateDomTree(tagName, attributes, children) {
+interface Attributes {
+  textContent?: string,
+  class?: string,
+  src?: string
+}
+
+function generateDomTree(tagName: string, attributes: Attributes | Record<string, never>, children?) {
   if (!children) {
     children = [];
   }
@@ -247,39 +259,29 @@ function generateDomTree(tagName, attributes, children) {
   return element;
 }
 
-function createMatchCardLi(key) {
+function createMatchCardLi(key: string) {
   var src = 'images/unavail.jpeg';
   if (data.collectionPhotos[data.nftVisible.collectionName]) {
     src = data.collectionPhotos[data.nftVisible.collectionName];
   }
   return generateDomTree(
-    'li',
-    {},
-    [generateDomTree(
-      'div',
-      { class: 'row' },
-      [generateDomTree(
-        'div',
-        { class: 'column-full column-full-media-wrapper card-wrapper-padding' },
-        [generateDomTree(
-          'div',
-          { class: 'card-wrapper' },
-          [generateDomTree('img',
-            { class: 'card-image', src }),
+    'li', {}, [
+      generateDomTree(
+        'div', { class: 'row' }, [
           generateDomTree(
-            'div',
-            { class: 'card-text-wrapper' },
-            [generateDomTree('div',
-              { class: 'likes-box' },
-              [generateDomTree(
-                'p',
-                { textContent: data.ratingsInfo[key].likes + 1 }),
-              generateDomTree('i', { class: 'fa-solid fa-heart' })]), generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })])])]
-      )])]);
+            'div', { class: 'column-full column-full-media-wrapper card-wrapper-padding' }, [
+              generateDomTree(
+                'div', { class: 'card-wrapper' }, [
+                  generateDomTree('img', { class: 'card-image', src }), generateDomTree('div', { class: 'card-text-wrapper' }, [
+                    generateDomTree(
+                      'div', { class: 'likes-box' }, [
+                        generateDomTree(
+                          'p', { textContent: data.ratingsInfo[key].likes + 1 }), generateDomTree('i', { class: 'fa-solid fa-heart' })]), generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })])])]
+          )])]);
 
 }
 
-function getCollectionPhotoURL(randomInt) {
+function getCollectionPhotoURL(randomInt: number): void {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.opensea.io/api/v1/asset_contract/' + data.nftList[randomInt].contract.address);
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
@@ -294,11 +296,14 @@ function getCollectionPhotoURL(randomInt) {
   xhr.send();
 }
 
-function throttle(callback, limit) {
+interface Callback {(event: MouseEvent): void}
+interface Callback2 {(randomInt: number): void}
+
+function throttle(callback : Callback | Callback2, limit: number) {
   var waiting = false;
   return function () {
     if (!waiting) {
-      callback.apply(this, arguments);
+      callback.apply(this);
       waiting = true;
       setTimeout(function () {
         cssLoaderActivate();
