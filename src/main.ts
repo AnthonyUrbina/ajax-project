@@ -63,15 +63,12 @@ function showFirstNFT() {
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
 
-    data.nftList = xhr.response.ownedNfts.filter(nft => {
-      const { contract, title } = nft;
-      const { metadata, media, contractMetadata, address } = contract;
-      let name;
-      let collectionName;
-      let image;
-      if (metadata) { name = metadata.name; }
-      if (contractMetadata) { collectionName = contractMetadata.name; }
-      if (media) { image = media[0].gateway.image; }
+    data.nftList = xhr.response.ownedNfts.map(nft => {
+      const { metadata, media, contractMetadata, title, contract } = nft;
+      const image = media[0].gateway;
+      const { address } = contract;
+      const { name } = metadata;
+      const collectionName = contractMetadata.name;
 
       const contractNFT = {
         title,
@@ -80,6 +77,7 @@ function showFirstNFT() {
         image,
         address
       };
+
       return contractNFT;
     });
 
@@ -104,8 +102,8 @@ function showNewNFT() {
       var randomInt = getRandomNumber(data.nftList.length);
 
       var nftName = data.nftList[randomInt].title;
-      var nftImage = data.nftList[randomInt].media[0].gateway;
-      var parentCollectionName = data.nftList[randomInt].contractMetadata.name;
+      var nftImage = data.nftList[randomInt].image;
+      var parentCollectionName = data.nftList[randomInt].name;
 
       const nftData: NftData = {
         name: nftName,
@@ -321,7 +319,7 @@ function createMatchCardLi(key: string) {
 
 function getCollectionPhotoURL(randomInt: number): void {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.opensea.io/api/v1/asset_contract/' + data.nftList[randomInt].contract.address);
+  xhr.open('GET', 'https://api.opensea.io/api/v1/asset_contract/' + data.nftList[randomInt].address);
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
