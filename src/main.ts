@@ -27,7 +27,8 @@ var newCollection: Container;
 interface CollectionData {
   collectionName: string,
   likes: number | null,
-  dislikes: number | null
+  dislikes: number | null,
+  superlikes: number
 }
 
 interface NftData {
