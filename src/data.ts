@@ -1,12 +1,5 @@
 /* exported data */
 
-interface NftVisible {
-  name: string,
-  hasBeenRated: boolean,
-  collectionName: string,
-  image: string
-}
-
 interface RatingsInfo {
   [key: string]: CollectionData
 }
@@ -15,11 +8,19 @@ interface CollectionPhotos {
   [key: string]: string
 }
 
+interface NftList {
+  title: string,
+  name: string,
+  collectionName: string,
+  image: string,
+  address: number
+}
+
 interface Data {
-  nftVisible: NftVisible | Record<string, never>,
+  nftVisible: NftData | Record<string, never>,
   ratingsInfo: RatingsInfo | Record<string, never>
   superliked: object | [],
-  nftList: [] | Record<string, never>,
+  nftList: NftList[],
   collectionPhotos: CollectionPhotos | Record<string, never>,
   owner: {wallet: string, projectContract: string[]}[]
 }
