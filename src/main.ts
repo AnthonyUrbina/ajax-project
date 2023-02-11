@@ -26,9 +26,9 @@ var newCollection: Container;
 
 interface CollectionData {
   collectionName: string,
-  likes: number | null,
-  dislikes: number | null,
-  superlikes: number | null
+  likes: number
+  dislikes: number
+  superlikes: number
 }
 
 interface NftData {
@@ -57,7 +57,8 @@ function showFirstNFT() {
     var collectionData: CollectionData = {
       collectionName: nftData.collectionName,
       likes: 0,
-      dislikes: 0
+      dislikes: 0,
+      superlikes: 0
     };
 
     $mainViewImage.src = nftData.image;
@@ -136,13 +137,18 @@ function showNewNFT() {
   xhr.send();
 }
 
-var handleRatingClick = throttle(function handleRatingClick(event) {
+interface Target {
+  target: HTMLInputElement
+}
+
+var handleRatingClick = throttle(function handleRatingClick(event: Target) {
   if (event.target.matches('.fa-solid')) {
     cssLoaderActivate();
     var collectionData: CollectionData = {
       collectionName: data.nftVisible.collectionName,
-      likes: null,
-      dislikes: null
+      likes: 0,
+      dislikes: 0,
+      superlikes: 0
     };
 
     if (data.nftVisible.hasBeenRated === false && data.nftVisible !== null) {

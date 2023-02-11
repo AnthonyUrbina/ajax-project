@@ -35,7 +35,8 @@ function showFirstNFT() {
     var collectionData = {
       collectionName: nftData.collectionName,
       likes: 0,
-      dislikes: 0
+      dislikes: 0,
+      superlikes: 0
     };
     $mainViewImage.src = nftData.image;
     $cardImageDiv.appendChild($mainViewImage);
@@ -103,8 +104,9 @@ var handleRatingClick = throttle(function handleRatingClick(event) {
     cssLoaderActivate();
     var collectionData = {
       collectionName: data.nftVisible.collectionName,
-      likes: null,
-      dislikes: null
+      likes: 0,
+      dislikes: 0,
+      superlikes: 0
     };
     if (data.nftVisible.hasBeenRated === false && data.nftVisible !== null) {
       showNewNFT();
