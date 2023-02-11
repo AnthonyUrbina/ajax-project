@@ -28,7 +28,7 @@ interface CollectionData {
   collectionName: string,
   likes: number | null,
   dislikes: number | null,
-  superlikes: number
+  superlikes: number | null
 }
 
 interface NftData {
@@ -118,15 +118,11 @@ function showNewNFT() {
 
       data.nftVisible = nftData;
 
-      interface CollectionData {
-        collectionName: string,
-        likes: number,
-        dislikes: number
-      }
       var collectionData: CollectionData = {
         collectionName: nftData.collectionName,
         likes: 0,
-        dislikes: 0
+        dislikes: 0,
+        superlikes: 0
       };
 
       if (!data.ratingsInfo[collectionData.collectionName]) {

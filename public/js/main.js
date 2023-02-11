@@ -86,7 +86,8 @@ function showNewNFT() {
       var collectionData = {
         collectionName: nftData.collectionName,
         likes: 0,
-        dislikes: 0
+        dislikes: 0,
+        superlikes: 0
       };
       if (!data.ratingsInfo[collectionData.collectionName]) {
         throttle(getCollectionPhotoURL(randomInt), 3000);
