@@ -254,7 +254,7 @@ function createMatchCardLi(key) {
         generateDomTree('div', { class: 'card-wrapper' }, [
           generateDomTree('img', { class: 'card-image', src }), generateDomTree('div', { class: 'card-text-wrapper' }, [
             generateDomTree('div', { class: 'likes-box' }, [
-              generateDomTree('p', { textContent: data.ratingsInfo[key].likes + 1 }), generateDomTree('i', { class: 'fa-solid fa-heart' })
+              generateDomTree('p', { textContent: [data.ratingsInfo[key].likes + 1].toString() }), generateDomTree('i', { class: 'fa-solid fa-heart' })
             ]), generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })
           ])
         ])

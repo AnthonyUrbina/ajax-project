@@ -313,7 +313,7 @@ function createMatchCardLi(key: string) {
                     generateDomTree(
                       'div', { class: 'likes-box' }, [
                         generateDomTree(
-                          'p', { textContent: data.ratingsInfo[key].likes + 1 }), generateDomTree('i', { class: 'fa-solid fa-heart' })]), generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })])])]
+                          'p', { textContent: [data.ratingsInfo[key].likes + 1].toString() }), generateDomTree('i', { class: 'fa-solid fa-heart' })]), generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })])])]
           )])]);
 
 }
