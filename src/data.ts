@@ -19,7 +19,7 @@ interface NftList {
 interface Data {
   nftVisible: NftData | Record<string, never>,
   ratingsInfo: RatingsInfo | Record<string, never>
-  superliked: object | [],
+  superliked: NftData[],
   nftList: NftList[],
   collectionPhotos: CollectionPhotos | Record<string, never>,
   owner: {wallet: string, projectContract: string[]}[]

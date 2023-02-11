@@ -204,7 +204,7 @@ function appendMatchCardLi(collectionData) {
   }
 }
 
-function handleSwapClick(event) {
+function handleSwapClick(event: Target) {
   for (var i = 0; i < $dataViewNodeList.length; i++) {
     if (event.target.matches('#view-all') || event.target.matches('.message-icon')) {
       if ($dataViewNodeList[i].dataset.view !== 'matches') {
