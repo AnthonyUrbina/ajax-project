@@ -1,7 +1,11 @@
 'use strict';
 /* exported data */
 var data = {
-  nftVisible: {},
+  nftVisible: {
+    name: '',
+    image: '',
+    collectionName: ''
+  },
   ratingsInfo: {},
   superliked: [],
   nftList: [],

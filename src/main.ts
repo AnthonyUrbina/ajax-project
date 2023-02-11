@@ -137,11 +137,9 @@ function showNewNFT() {
   xhr.send();
 }
 
-interface Target {
-  target: HTMLInputElement
-}
-
-var handleRatingClick = throttle(function handleRatingClick(event: Target) {
+var handleRatingClick = throttle(function handleRatingClick(event: { target: HTMLInputElement }) {
+  // console.log(event);
+  // const target = event.target as HTMLInputElement;
   if (event.target.matches('.fa-solid')) {
     cssLoaderActivate();
     var collectionData: CollectionData = {
@@ -204,7 +202,7 @@ function appendMatchCardLi(collectionData) {
   }
 }
 
-function handleSwapClick(event: Target) {
+function handleSwapClick(event) {
   for (var i = 0; i < $dataViewNodeList.length; i++) {
     if (event.target.matches('#view-all') || event.target.matches('.message-icon')) {
       if ($dataViewNodeList[i].dataset.view !== 'matches') {
@@ -326,7 +324,7 @@ function getCollectionPhotoURL(randomInt: number): void {
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    var parentCollectionPhoto: string | null;
+    var parentCollectionPhoto: string;
 
     if (xhr.status === 429 || xhr.status === 401) {
       parentCollectionPhoto = 'images/unavail.jpeg';
@@ -338,7 +336,7 @@ function getCollectionPhotoURL(randomInt: number): void {
   xhr.send();
 }
 
-interface Callback {(event: MouseEvent): void}
+interface Callback { (event: { target: HTMLInputElement }): void}
 interface Callback2 {(randomInt: number): void}
 
 function throttle(callback : Callback | Callback2, limit: number) {

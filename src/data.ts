@@ -17,7 +17,7 @@ interface NftList {
 }
 
 interface Data {
-  nftVisible: NftData | Record<string, never>,
+  nftVisible: NftData
   ratingsInfo: RatingsInfo | Record<string, never>
   superliked: NftData[],
   nftList: NftList[],
@@ -26,7 +26,11 @@ interface Data {
 }
 
 var data: Data = {
-  nftVisible: {},
+  nftVisible: {
+    name: '',
+    image: '',
+    collectionName: ''
+  },
   ratingsInfo: {},
   superliked: [],
   nftList: [],

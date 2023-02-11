@@ -100,6 +100,8 @@ function showNewNFT() {
   xhr.send();
 }
 var handleRatingClick = throttle(function handleRatingClick(event) {
+  // console.log(event);
+  // const target = event.target as HTMLInputElement;
   if (event.target.matches('.fa-solid')) {
     cssLoaderActivate();
     var collectionData = {
