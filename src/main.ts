@@ -65,7 +65,16 @@ function showFirstNFT() {
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
 
-    data.nftList = xhr.response.ownedNfts.map(nft => {
+    interface OpenseaData {
+      metadata: {name: string},
+      media: [{gateway: string}],
+      contractMetadata: {name: string},
+      title: string,
+      contract: {address: string}
+    }
+
+    data.nftList = xhr.response.ownedNfts.map((nft: OpenseaData) => {
+      // console.log(nft);
       const { metadata, media, contractMetadata, title, contract } = nft;
       const image = media[0].gateway;
       const { address } = contract;
@@ -165,7 +174,7 @@ var handleRatingClick = throttle(function handleRatingClick(event: { target: HTM
     }
 
     if (data.nftList.length === 0) {
-      var matchInfo = findMatch(data);
+      var matchInfo: CollectionData = findMatch(data);
       var src = 'images/unavail.jpeg';
       if (data.collectionPhotos[matchInfo.collectionName]) {
         src = data.collectionPhotos[matchInfo.collectionName];
@@ -185,7 +194,7 @@ var handleRatingClick = throttle(function handleRatingClick(event: { target: HTM
 }, 2000);
 
 function appendMatchCardLi(collectionData: CollectionData) {
-  if (parseInt(data.ratingsInfo[collectionData.collectionName].likes) >= 1) {
+  if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
     var $liNodeList = document.querySelectorAll('li');
     for (var i = 0; i < $liNodeList.length; i++) {
       var $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
@@ -255,7 +264,7 @@ function getRandomNumber(collectionLength: number) {
   return integer;
 }
 
-function findMatch(data) {
+function findMatch(data: Data): CollectionData {
   var container = null;
   for (var key in data.ratingsInfo) {
     for (var keys in data.ratingsInfo) {

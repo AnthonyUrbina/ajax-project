@@ -42,6 +42,7 @@ function showFirstNFT() {
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
     data.nftList = xhr.response.ownedNfts.map(nft => {
+      // console.log(nft);
       const { metadata, media, contractMetadata, title, contract } = nft;
       const image = media[0].gateway;
       const { address } = contract;
@@ -143,7 +144,7 @@ var handleRatingClick = throttle(function handleRatingClick(event) {
   }
 }, 2000);
 function appendMatchCardLi(collectionData) {
-  if (parseInt(data.ratingsInfo[collectionData.collectionName].likes) >= 1) {
+  if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
     var $liNodeList = document.querySelectorAll('li');
     for (var i = 0; i < $liNodeList.length; i++) {
       var $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
