@@ -149,8 +149,7 @@ function showNewNFT() {
 }
 
 const handleRatingClick = throttle(
-  function handleRatingClick(event: { target: HTMLInputElement }) {
-  // console.log(event);
+  (event: MouseEvent) => {
     const target = event.target as HTMLInputElement;
     if (target.matches('.fa-solid')) {
       cssLoaderActivate();
@@ -213,21 +212,22 @@ function appendMatchCardLi(collectionData: CollectionData) {
   }
 }
 
-function handleSwapClick(event: {target: HTMLInputElement}) {
+function handleSwapClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
   for (let i = 0; i < $dataViewNodeList.length; i++) {
-    if (event.target.matches('#view-all') || event.target.matches('.message-icon')) {
+    if (target.matches('#view-all') || target.matches('.message-icon')) {
       if ($dataViewNodeList[i].dataset.view !== 'matches') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'matches') {
         $dataViewNodeList[i].classList.remove('hidden');
       }
-    } else if (event.target.matches('.match-back-arrow')) {
+    } else if (target.matches('.match-back-arrow')) {
       if ($dataViewNodeList[i].dataset.view !== 'swipe') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'swipe') {
         $dataViewNodeList[i].classList.remove('hidden');
       }
-    } else if (event.target.matches('#continue-playing')) {
+    } else if (target.matches('#continue-playing')) {
       if ($dataViewNodeList[i].dataset.view !== 'swipe') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'swipe') {
@@ -247,7 +247,7 @@ function handleSwapClick(event: {target: HTMLInputElement}) {
         data.ratingsInfo = {};
         showFirstNFT();
       }
-    } else if (event.target.matches('.fa-crown')) {
+    } else if (target.matches('.fa-crown')) {
       if ($dataViewNodeList[i].dataset.view !== 'superlikes') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'superlikes') {
@@ -267,19 +267,25 @@ function getRandomNumber(collectionLength: number) {
 }
 
 function findMatch(data: Data): CollectionData {
-  let container = null;
+  let container: CollectionData = {
+    collectionName: '',
+    likes: 0,
+    dislikes: 0,
+    superlikes: 0
+  };
   for (const key in data.ratingsInfo) {
     for (const keys in data.ratingsInfo) {
       if (data.ratingsInfo[key] !== data.ratingsInfo[keys]) {
         if (data.ratingsInfo[key].likes < data.ratingsInfo[keys].likes || data.ratingsInfo[key].likes === null) {
           break;
-        } else if (container === null || data.ratingsInfo[key].likes > container.likes) {
+        } else if (container.collectionName === '' || data.ratingsInfo[key].likes > container.likes) {
           container = data.ratingsInfo[key];
           break;
         }
       }
     }
   }
+
   return container;
 }
 
@@ -330,7 +336,7 @@ function createMatchCardLi(key: string) {
 
 }
 
-function getCollectionPhotoURL(randomInt: number): void {
+function getCollectionPhotoURL(randomInt: number) {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.opensea.io/api/v1/asset_contract/' + data.nftList[randomInt].address);
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
@@ -348,7 +354,7 @@ function getCollectionPhotoURL(randomInt: number): void {
   xhr.send();
 }
 
-interface Callback { (event: { target: HTMLInputElement }): void}
+interface Callback { (event: MouseEvent): void }
 interface Callback2 { (randomInt: number): void }
 
 function throttle(callback : Callback | Callback2, limit: number) {

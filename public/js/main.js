@@ -101,8 +101,7 @@ function showNewNFT() {
   });
   xhr.send();
 }
-const handleRatingClick = throttle(function handleRatingClick(event) {
-  // console.log(event);
+const handleRatingClick = throttle(event => {
   const target = event.target;
   if (target.matches('.fa-solid')) {
     cssLoaderActivate();
@@ -161,20 +160,21 @@ function appendMatchCardLi(collectionData) {
   }
 }
 function handleSwapClick(event) {
+  const target = event.target;
   for (let i = 0; i < $dataViewNodeList.length; i++) {
-    if (event.target.matches('#view-all') || event.target.matches('.message-icon')) {
+    if (target.matches('#view-all') || target.matches('.message-icon')) {
       if ($dataViewNodeList[i].dataset.view !== 'matches') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'matches') {
         $dataViewNodeList[i].classList.remove('hidden');
       }
-    } else if (event.target.matches('.match-back-arrow')) {
+    } else if (target.matches('.match-back-arrow')) {
       if ($dataViewNodeList[i].dataset.view !== 'swipe') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'swipe') {
         $dataViewNodeList[i].classList.remove('hidden');
       }
-    } else if (event.target.matches('#continue-playing')) {
+    } else if (target.matches('#continue-playing')) {
       if ($dataViewNodeList[i].dataset.view !== 'swipe') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'swipe') {
@@ -194,7 +194,7 @@ function handleSwapClick(event) {
         data.ratingsInfo = {};
         showFirstNFT();
       }
-    } else if (event.target.matches('.fa-crown')) {
+    } else if (target.matches('.fa-crown')) {
       if ($dataViewNodeList[i].dataset.view !== 'superlikes') {
         $dataViewNodeList[i].className += ' hidden';
       } else if ($dataViewNodeList[i].dataset.view === 'superlikes') {
@@ -212,13 +212,18 @@ function getRandomNumber(collectionLength) {
   return integer;
 }
 function findMatch(data) {
-  let container = null;
+  let container = {
+    collectionName: '',
+    likes: 0,
+    dislikes: 0,
+    superlikes: 0
+  };
   for (const key in data.ratingsInfo) {
     for (const keys in data.ratingsInfo) {
       if (data.ratingsInfo[key] !== data.ratingsInfo[keys]) {
         if (data.ratingsInfo[key].likes < data.ratingsInfo[keys].likes || data.ratingsInfo[key].likes === null) {
           break;
-        } else if (container === null || data.ratingsInfo[key].likes > container.likes) {
+        } else if (container.collectionName === '' || data.ratingsInfo[key].likes > container.likes) {
           container = data.ratingsInfo[key];
           break;
         }
