@@ -184,7 +184,7 @@ var handleRatingClick = throttle(function handleRatingClick(event: { target: HTM
   }
 }, 2000);
 
-function appendMatchCardLi(collectionData) {
+function appendMatchCardLi(collectionData: CollectionData) {
   if (parseInt(data.ratingsInfo[collectionData.collectionName].likes) >= 1) {
     var $liNodeList = document.querySelectorAll('li');
     for (var i = 0; i < $liNodeList.length; i++) {
