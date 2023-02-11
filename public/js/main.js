@@ -233,7 +233,7 @@ function generateDomTree(tagName, attributes, children) {
   var element = document.createElement(tagName);
   for (var key in attributes) {
     if (key === 'textContent') {
-      element.textContent = attributes.textContent;
+      element.textContent = attributes.textContent ?? 'Error Loading Text';
     } else {
       element.setAttribute(key, attributes[key]);
     }
@@ -255,7 +255,8 @@ function createMatchCardLi(key) {
           generateDomTree('img', { class: 'card-image', src }), generateDomTree('div', { class: 'card-text-wrapper' }, [
             generateDomTree('div', { class: 'likes-box' }, [
               generateDomTree('p', { textContent: [data.ratingsInfo[key].likes + 1].toString() }), generateDomTree('i', { class: 'fa-solid fa-heart' })
-            ]), generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })
+            ]),
+            generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })
           ])
         ])
       ])
