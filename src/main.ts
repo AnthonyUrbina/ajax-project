@@ -15,6 +15,8 @@ const $modalImage = document.createElement('img')!;
 const $matchesUl = document.querySelector('.matches-ul')!;
 const $superlikesUl = document.querySelector('.superlikes-ul')!;
 const $dataViewNodeList = document.querySelectorAll<HTMLElement>('[data-view]')!;
+const $liNodeList = document.querySelectorAll<HTMLElement>('li')!;
+
 const $cssLoader = document.querySelector('.lds-spinner')!;
 
 interface Container {
@@ -196,9 +198,8 @@ const handleRatingClick = throttle(
 
 function appendMatchCardLi(collectionData: CollectionData) {
   if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
-    const $liNodeList = document.querySelectorAll('li');
     for (let i = 0; i < $liNodeList.length; i++) {
-      const $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
+      const $liTextContent = $liNodeList[i].textContent!.replace(/[0-9]/g, '');
       if ($liTextContent === data.nftVisible.collectionName) {
         const $li = createMatchCardLi(data.nftVisible.collectionName);
         data.ratingsInfo[collectionData.collectionName].likes++;

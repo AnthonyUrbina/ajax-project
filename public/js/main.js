@@ -15,6 +15,7 @@ const $modalImage = document.createElement('img');
 const $matchesUl = document.querySelector('.matches-ul');
 const $superlikesUl = document.querySelector('.superlikes-ul');
 const $dataViewNodeList = document.querySelectorAll('[data-view]');
+const $liNodeList = document.querySelectorAll('li');
 const $cssLoader = document.querySelector('.lds-spinner');
 let newCollection;
 function showFirstNFT() {
@@ -145,7 +146,6 @@ const handleRatingClick = throttle(function handleRatingClick(event) {
 }, 2000);
 function appendMatchCardLi(collectionData) {
   if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
-    const $liNodeList = document.querySelectorAll('li');
     for (let i = 0; i < $liNodeList.length; i++) {
       const $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
       if ($liTextContent === data.nftVisible.collectionName) {
