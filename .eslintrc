@@ -14,7 +14,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "no-var": "off",
+    "no-var": "error",
     "semi": [
       "error",
       "always"

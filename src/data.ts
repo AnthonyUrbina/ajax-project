@@ -25,7 +25,7 @@ interface Data {
   owner: {wallet: string, projectContract: string[]}[]
 }
 
-var data: Data = {
+const data: Data = {
   nftVisible: {
     name: '',
     image: '',

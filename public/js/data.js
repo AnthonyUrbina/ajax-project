@@ -1,6 +1,6 @@
 'use strict';
 /* exported data */
-var data = {
+const data = {
   nftVisible: {
     name: '',
     image: '',

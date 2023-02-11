@@ -1,38 +1,38 @@
 'use strict';
 /* exported CollectionData */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-var $mainViewTitle = document.querySelector('.card-text > p');
-var $cardImageDiv = document.querySelector('.card');
-var $buttonContainer = document.querySelector('.button-container');
-var $modal = document.querySelector('.modal-box');
-var $overlay = document.querySelector('.overlay');
-var $modalText = document.querySelector('.modal-p');
-var $modalImageDiv = document.querySelector('.modal-image');
-var $miniMessageIconMatch = document.querySelector('#mini-message-icon-match');
-var $miniMessageIconSuperlikes = document.querySelector('#mini-message-icon-superlikes');
-var $mainViewImage = document.createElement('img');
-var $modalImage = document.createElement('img');
-var $matchesUl = document.querySelector('.matches-ul');
-var $superlikesUl = document.querySelector('.superlikes-ul');
-var $dataViewNodeList = document.querySelectorAll('[data-view]');
-var $cssLoader = document.querySelector('.lds-spinner');
-var newCollection;
+const $mainViewTitle = document.querySelector('.card-text > p');
+const $cardImageDiv = document.querySelector('.card');
+const $buttonContainer = document.querySelector('.button-container');
+const $modal = document.querySelector('.modal-box');
+const $overlay = document.querySelector('.overlay');
+const $modalText = document.querySelector('.modal-p');
+const $modalImageDiv = document.querySelector('.modal-image');
+const $miniMessageIconMatch = document.querySelector('#mini-message-icon-match');
+const $miniMessageIconSuperlikes = document.querySelector('#mini-message-icon-superlikes');
+const $mainViewImage = document.createElement('img');
+const $modalImage = document.createElement('img');
+const $matchesUl = document.querySelector('.matches-ul');
+const $superlikesUl = document.querySelector('.superlikes-ul');
+const $dataViewNodeList = document.querySelectorAll('[data-view]');
+const $cssLoader = document.querySelector('.lds-spinner');
+let newCollection;
 function showFirstNFT() {
   cssLoaderActivate();
   newCollection = chooseWallet();
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner + newCollection.addresses);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     cssLoaderActivate();
-    var randomInt = getRandomNumber(xhr.response.ownedNfts.length);
-    var nftData = {
+    const randomInt = getRandomNumber(xhr.response.ownedNfts.length);
+    const nftData = {
       name: xhr.response.ownedNfts[randomInt].metadata.name,
       image: xhr.response.ownedNfts[randomInt].media[0].gateway,
       collectionName: xhr.response.ownedNfts[randomInt].contractMetadata.name,
       hasBeenRated: false
     };
-    var collectionData = {
+    const collectionData = {
       collectionName: nftData.collectionName,
       likes: 0,
       dislikes: 0,
@@ -67,15 +67,15 @@ function showFirstNFT() {
   xhr.send();
 }
 function showNewNFT() {
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     if (data.nftList.length > 0) {
-      var randomInt = getRandomNumber(data.nftList.length);
-      var nftName = data.nftList[randomInt].title;
-      var nftImage = data.nftList[randomInt].image;
-      var parentCollectionName = data.nftList[randomInt].name;
+      const randomInt = getRandomNumber(data.nftList.length);
+      const nftName = data.nftList[randomInt].title;
+      const nftImage = data.nftList[randomInt].image;
+      const parentCollectionName = data.nftList[randomInt].name;
       const nftData = {
         name: nftName,
         image: nftImage,
@@ -85,7 +85,7 @@ function showNewNFT() {
       $mainViewImage.src = nftImage;
       $mainViewTitle.textContent = nftName;
       data.nftVisible = nftData;
-      var collectionData = {
+      const collectionData = {
         collectionName: nftData.collectionName,
         likes: 0,
         dislikes: 0,
@@ -100,12 +100,12 @@ function showNewNFT() {
   });
   xhr.send();
 }
-var handleRatingClick = throttle(function handleRatingClick(event) {
+const handleRatingClick = throttle(function handleRatingClick(event) {
   // console.log(event);
-  // const target = event.target as HTMLInputElement;
-  if (event.target.matches('.fa-solid')) {
+  const target = event.target;
+  if (target.matches('.fa-solid')) {
     cssLoaderActivate();
-    var collectionData = {
+    const collectionData = {
       collectionName: data.nftVisible.collectionName,
       likes: 0,
       dislikes: 0,
@@ -113,21 +113,21 @@ var handleRatingClick = throttle(function handleRatingClick(event) {
     };
     if (data.nftVisible.hasBeenRated === false && data.nftVisible !== null) {
       showNewNFT();
-      if (event.target.matches('.fa-heart')) {
+      if (target.matches('.fa-heart')) {
         appendMatchCardLi(collectionData);
-      } else if (event.target.matches('.fa-star')) {
+      } else if (target.matches('.fa-star')) {
         appendMatchCardLi(collectionData);
         data.superliked.push(data.nftVisible);
         data.ratingsInfo[collectionData.collectionName].superlikes++;
         appendSuperlikesCardLi();
-      } else if (event.target.matches('.fa-thumbs-down')) {
+      } else if (target.matches('.fa-thumbs-down')) {
         data.ratingsInfo[collectionData.collectionName].dislikes++;
       }
       data.nftVisible.hasBeenRated = true;
     }
     if (data.nftList.length === 0) {
-      var matchInfo = findMatch(data);
-      var src = 'images/unavail.jpeg';
+      const matchInfo = findMatch(data);
+      let src = 'images/unavail.jpeg';
       if (data.collectionPhotos[matchInfo.collectionName]) {
         src = data.collectionPhotos[matchInfo.collectionName];
       }
@@ -145,23 +145,23 @@ var handleRatingClick = throttle(function handleRatingClick(event) {
 }, 2000);
 function appendMatchCardLi(collectionData) {
   if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
-    var $liNodeList = document.querySelectorAll('li');
-    for (var i = 0; i < $liNodeList.length; i++) {
-      var $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
+    const $liNodeList = document.querySelectorAll('li');
+    for (let i = 0; i < $liNodeList.length; i++) {
+      const $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
       if ($liTextContent === data.nftVisible.collectionName) {
-        var $li = createMatchCardLi(data.nftVisible.collectionName);
+        const $li = createMatchCardLi(data.nftVisible.collectionName);
         data.ratingsInfo[collectionData.collectionName].likes++;
         $matchesUl.replaceChild($li, $liNodeList[i]);
       }
     }
   } else {
-    $li = createMatchCardLi(data.nftVisible.collectionName);
+    const $li = createMatchCardLi(data.nftVisible.collectionName);
     data.ratingsInfo[collectionData.collectionName].likes++;
     $matchesUl.appendChild($li);
   }
 }
 function handleSwapClick(event) {
-  for (var i = 0; i < $dataViewNodeList.length; i++) {
+  for (let i = 0; i < $dataViewNodeList.length; i++) {
     if (event.target.matches('#view-all') || event.target.matches('.message-icon')) {
       if ($dataViewNodeList[i].dataset.view !== 'matches') {
         $dataViewNodeList[i].className += ' hidden';
@@ -181,8 +181,8 @@ function handleSwapClick(event) {
         $dataViewNodeList[i].classList.remove('hidden');
       }
       if (i === $dataViewNodeList.length - 1) {
-        var $liNodeList = document.querySelectorAll('li');
-        for (var j = 0; j < $liNodeList.length; j++) {
+        const $liNodeList = document.querySelectorAll('li');
+        for (let j = 0; j < $liNodeList.length; j++) {
           if (j < ($liNodeList.length - data.superliked.length)) {
             $matchesUl.removeChild($liNodeList[j]);
           } else {
@@ -207,14 +207,14 @@ window.addEventListener('DOMContentLoaded', showFirstNFT);
 $buttonContainer.addEventListener('click', handleRatingClick);
 document.addEventListener('click', handleSwapClick);
 function getRandomNumber(collectionLength) {
-  var randomNumber = Math.random() * collectionLength;
-  var integer = Math.floor(randomNumber);
+  const randomNumber = Math.random() * collectionLength;
+  const integer = Math.floor(randomNumber);
   return integer;
 }
 function findMatch(data) {
-  var container = null;
-  for (var key in data.ratingsInfo) {
-    for (var keys in data.ratingsInfo) {
+  let container = null;
+  for (const key in data.ratingsInfo) {
+    for (const keys in data.ratingsInfo) {
       if (data.ratingsInfo[key] !== data.ratingsInfo[keys]) {
         if (data.ratingsInfo[key].likes < data.ratingsInfo[keys].likes || data.ratingsInfo[key].likes === null) {
           break;
@@ -231,21 +231,21 @@ function generateDomTree(tagName, attributes, children) {
   if (!children) {
     children = [];
   }
-  var element = document.createElement(tagName);
-  for (var key in attributes) {
+  const element = document.createElement(tagName);
+  for (const key in attributes) {
     if (key === 'textContent') {
       element.textContent = attributes.textContent ?? 'Error Loading Text';
     } else {
       element.setAttribute(key, attributes[key]);
     }
   }
-  for (var i = 0; i < children.length; i++) {
+  for (let i = 0; i < children.length; i++) {
     element.append(children[i]);
   }
   return element;
 }
 function createMatchCardLi(key) {
-  var src = 'images/unavail.jpeg';
+  let src = 'images/unavail.jpeg';
   if (data.collectionPhotos[data.nftVisible.collectionName]) {
     src = data.collectionPhotos[data.nftVisible.collectionName];
   }
@@ -265,12 +265,12 @@ function createMatchCardLi(key) {
   ]);
 }
 function getCollectionPhotoURL(randomInt) {
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.opensea.io/api/v1/asset_contract/' + data.nftList[randomInt].address);
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    var parentCollectionPhoto;
+    let parentCollectionPhoto;
     if (xhr.status === 429 || xhr.status === 401) {
       parentCollectionPhoto = 'images/unavail.jpeg';
     } else {
@@ -281,7 +281,7 @@ function getCollectionPhotoURL(randomInt) {
   xhr.send();
 }
 function throttle(callback, limit) {
-  var waiting = false;
+  let waiting = false;
   return function () {
     if (!waiting) {
       callback.apply(this);
@@ -294,14 +294,14 @@ function throttle(callback, limit) {
   };
 }
 function chooseWallet() {
-  var container = {
+  const container = {
     owner: null,
     addresses: null
   };
-  var addresses = '';
-  var randomInt = getRandomNumber(data.owner.length);
+  let addresses = '';
+  const randomInt = getRandomNumber(data.owner.length);
   container.owner = data.owner[randomInt].wallet;
-  for (var i = 0; i < data.owner[randomInt].projectContract.length; i++) {
+  for (let i = 0; i < data.owner[randomInt].projectContract.length; i++) {
     addresses = addresses.concat('&contractAddresses[]=' + data.owner[randomInt].projectContract[i]);
   }
   container.addresses = addresses;
@@ -310,11 +310,11 @@ function chooseWallet() {
 }
 function appendSuperlikesCardLi() {
   if ($superlikesUl === null) { return; }
-  var $li = createSuperlikesCardLi();
+  const $li = createSuperlikesCardLi();
   $superlikesUl.appendChild($li);
 }
 function createSuperlikesCardLi() {
-  var src = 'images/unavail.jpeg';
+  let src = 'images/unavail.jpeg';
   if (data.nftVisible.image) {
     src = data.nftVisible.image;
   }
