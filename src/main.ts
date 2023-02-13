@@ -148,52 +148,55 @@ function showNewNFT() {
   xhr.send();
 }
 
-const handleRatingClick = throttle(
-  (event: MouseEvent) => {
-    const target = event.target as HTMLInputElement;
-    if (target.matches('.fa-solid')) {
-      cssLoaderActivate();
-      const collectionData: CollectionData = {
-        collectionName: data.nftVisible.collectionName,
-        likes: 0,
-        dislikes: 0,
-        superlikes: 0
-      };
+interface HandleRatingClick {
+  (event: MouseEvent): void
+}
 
-      if (data.nftVisible.hasBeenRated === false && data.nftVisible !== null) {
-        showNewNFT();
-        if (target.matches('.fa-heart')) {
-          appendMatchCardLi(collectionData);
-        } else if (target.matches('.fa-star')) {
-          appendMatchCardLi(collectionData);
-          data.superliked.push(data.nftVisible);
-          data.ratingsInfo[collectionData.collectionName].superlikes++;
-          appendSuperlikesCardLi();
-        } else if (target.matches('.fa-thumbs-down')) {
-          data.ratingsInfo[collectionData.collectionName].dislikes++;
-        }
-        data.nftVisible.hasBeenRated = true;
-      }
+const handleRatingClick = throttle(function (event: MouseEvent) {
+  const target = event.target as HTMLInputElement;
+  if (target.matches('.fa-solid')) {
+    cssLoaderActivate();
+    const collectionData: CollectionData = {
+      collectionName: data.nftVisible.collectionName,
+      likes: 0,
+      dislikes: 0,
+      superlikes: 0
+    };
 
-      if (data.nftList.length === 0) {
-        const matchInfo: CollectionData = findMatch(data);
-        let src = 'images/unavail.jpeg';
-        if (data.collectionPhotos[matchInfo.collectionName]) {
-          src = data.collectionPhotos[matchInfo.collectionName];
-        }
-        $modalText.textContent = 'You and ' + matchInfo.collectionName + ' have liked each other.';
-        $modalImage.src = src;
-        $modalImageDiv.appendChild($modalImage);
-        $modal.className = 'modal-box';
-        $overlay.className = 'overlay';
+    if (data.nftVisible.hasBeenRated === false && data.nftVisible !== null) {
+      showNewNFT();
+      if (target.matches('.fa-heart')) {
+        appendMatchCardLi(collectionData);
+      } else if (target.matches('.fa-star')) {
+        appendMatchCardLi(collectionData);
+        data.superliked.push(data.nftVisible);
+        data.ratingsInfo[collectionData.collectionName].superlikes++;
+        appendSuperlikesCardLi();
+      } else if (target.matches('.fa-thumbs-down')) {
+        data.ratingsInfo[collectionData.collectionName].dislikes++;
       }
-
-      if (data.ratingsInfo[collectionData.collectionName].likes !== null) {
-        $miniMessageIconMatch.className = '';
-        $miniMessageIconSuperlikes.className = '';
-      }
+      data.nftVisible.hasBeenRated = true;
     }
-  }, 2000);
+
+    if (data.nftList.length === 0) {
+      const matchInfo: CollectionData = findMatch(data);
+      let src = 'images/unavail.jpeg';
+      if (data.collectionPhotos[matchInfo.collectionName]) {
+        src = data.collectionPhotos[matchInfo.collectionName];
+      }
+      $modalText.textContent = 'You and ' + matchInfo.collectionName + ' have liked each other.';
+      $modalImage.src = src;
+      $modalImageDiv.appendChild($modalImage);
+      $modal.className = 'modal-box';
+      $overlay.className = 'overlay';
+    }
+
+    if (data.ratingsInfo[collectionData.collectionName].likes !== null) {
+      $miniMessageIconMatch.className = '';
+      $miniMessageIconSuperlikes.className = '';
+    }
+  }
+}, 2000);
 
 function appendMatchCardLi(collectionData: CollectionData) {
   if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
@@ -290,12 +293,10 @@ function findMatch(data: Data): CollectionData {
 }
 
 interface Attributes {
-  textContent?: string,
-  class?: string,
-  src?: string
+[key: string]: string
 }
 
-function generateDomTree(tagName: string, attributes: Attributes | Record<string, never>, children?) {
+function generateDomTree(tagName: string, attributes: Attributes, children: HTMLElement[] = []) {
   if (!children) {
     children = [];
   }
@@ -333,7 +334,6 @@ function createMatchCardLi(key: string) {
                           'p', { textContent: [data.ratingsInfo[key].likes + 1].toString() }), generateDomTree('i', { class: 'fa-solid fa-heart' })]),
                     generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })])])]
           )])]);
-
 }
 
 function getCollectionPhotoURL(randomInt: number) {

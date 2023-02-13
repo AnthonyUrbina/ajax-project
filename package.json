@@ -5,7 +5,8 @@
   "description": "A dynamic HTML, CSS, and JavaScript solo project.",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "watch": "npx tsc --watch"
   },
   "keywords": [],
   "devDependencies": {

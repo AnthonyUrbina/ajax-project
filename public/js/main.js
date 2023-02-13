@@ -101,7 +101,7 @@ function showNewNFT() {
   });
   xhr.send();
 }
-const handleRatingClick = throttle(event => {
+const handleRatingClick = throttle(function (event) {
   const target = event.target;
   if (target.matches('.fa-solid')) {
     cssLoaderActivate();
@@ -232,7 +232,7 @@ function findMatch(data) {
   }
   return container;
 }
-function generateDomTree(tagName, attributes, children) {
+function generateDomTree(tagName, attributes, children = []) {
   if (!children) {
     children = [];
   }
