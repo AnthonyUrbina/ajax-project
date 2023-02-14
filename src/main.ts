@@ -19,26 +19,7 @@ const $liNodeList = document.querySelectorAll<HTMLElement>('li')!;
 
 const $cssLoader = document.querySelector('.lds-spinner')!;
 
-interface Container {
-  owner: string | null,
-  addresses: string | null
-}
-
 let newCollection: Container;
-
-interface CollectionData {
-  collectionName: string,
-  likes: number
-  dislikes: number
-  superlikes: number
-}
-
-interface NftData {
-  name: string,
-  image: string,
-  collectionName: string,
-  hasBeenRated?: boolean
-}
 
 function showFirstNFT() {
   cssLoaderActivate();
@@ -66,14 +47,6 @@ function showFirstNFT() {
     $mainViewImage.src = nftData.image;
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
-
-    interface OpenseaData {
-      metadata: {name: string},
-      media: [{gateway: string}],
-      contractMetadata: {name: string},
-      title: string,
-      contract: {address: string}
-    }
 
     data.nftList = xhr.response.ownedNfts.map((nft: OpenseaData) => {
       const { metadata, media, contractMetadata, title, contract } = nft;
@@ -286,10 +259,6 @@ function findMatch(data: Data): CollectionData {
   }
 
   return container;
-}
-
-interface Attributes {
-[key: string]: string
 }
 
 function generateDomTree(tagName: string, attributes: Attributes, children: HTMLElement[] = []) {

@@ -1,30 +1,5 @@
 /* exported data */
 
-interface RatingsInfo {
-  [key: string]: CollectionData
-}
-
-interface CollectionPhotos {
-  [key: string]: string
-}
-
-interface NftList {
-  title: string,
-  name: string,
-  collectionName: string,
-  image: string,
-  address: number
-}
-
-interface Data {
-  nftVisible: NftData
-  ratingsInfo: RatingsInfo | Record<string, never>
-  superliked: NftData[],
-  nftList: NftList[],
-  collectionPhotos: CollectionPhotos | Record<string, never>,
-  owner: {wallet: string, projectContract: string[]}[]
-}
-
 const data: Data = {
   nftVisible: {
     name: '',
