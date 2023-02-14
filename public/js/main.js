@@ -8,25 +8,25 @@ const $modal = document.querySelector('.modal-box');
 const $overlay = document.querySelector('.overlay');
 const $modalText = document.querySelector('.modal-p');
 const $modalImageDiv = document.querySelector('.modal-image');
+const $modalImage = document.createElement('img');
 const $miniMessageIconMatch = document.querySelector('#mini-message-icon-match');
 const $miniMessageIconSuperlikes = document.querySelector('#mini-message-icon-superlikes');
 const $mainViewImage = document.createElement('img');
-const $modalImage = document.createElement('img');
 const $matchesUl = document.querySelector('.matches-ul');
 const $superlikesUl = document.querySelector('.superlikes-ul');
+const $cssLoader = document.querySelector('.lds-spinner');
 const $dataViewNodeList = document.querySelectorAll('[data-view]');
 const $liNodeList = document.querySelectorAll('li');
-const $cssLoader = document.querySelector('.lds-spinner');
-let newCollection;
+let wallet;
 function showFirstNFT() {
   cssLoaderActivate();
-  newCollection = chooseWallet();
+  wallet = chooseWallet();
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner + newCollection.addresses);
+  xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + wallet.owner + wallet.addresses);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     cssLoaderActivate();
-    const randomInt = getRandomNumber(xhr.response.ownedNfts.length);
+    const randomInt = getRandomInt(xhr.response.ownedNfts.length);
     const nftData = {
       name: xhr.response.ownedNfts[randomInt].metadata.name,
       image: xhr.response.ownedNfts[randomInt].media[0].gateway,
@@ -69,12 +69,12 @@ function showFirstNFT() {
 function showNewNFT() {
   cssLoaderActivate();
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner);
+  xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + wallet.owner);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     cssLoaderActivate();
     if (data.nftList.length > 0) {
-      const randomInt = getRandomNumber(data.nftList.length);
+      const randomInt = getRandomInt(data.nftList.length);
       const nftName = data.nftList[randomInt].title;
       const nftImage = data.nftList[randomInt].image;
       const parentCollectionName = data.nftList[randomInt].name;
@@ -206,13 +206,13 @@ function handleSwapClick(event) {
 window.addEventListener('DOMContentLoaded', showFirstNFT);
 $buttonContainer.addEventListener('click', handleRatingClick);
 document.addEventListener('click', handleSwapClick);
-function getRandomNumber(collectionLength) {
+function getRandomInt(collectionLength) {
   const randomNumber = Math.random() * collectionLength;
   const integer = Math.floor(randomNumber);
   return integer;
 }
 function findMatch(data) {
-  let container = {
+  let collectionData = {
     collectionName: '',
     likes: 0,
     dislikes: 0,
@@ -223,14 +223,14 @@ function findMatch(data) {
       if (data.ratingsInfo[key] !== data.ratingsInfo[keys]) {
         if (data.ratingsInfo[key].likes < data.ratingsInfo[keys].likes || data.ratingsInfo[key].likes === null) {
           break;
-        } else if (container.collectionName === '' || data.ratingsInfo[key].likes > container.likes) {
-          container = data.ratingsInfo[key];
+        } else if (collectionData.collectionName === '' || data.ratingsInfo[key].likes > collectionData.likes) {
+          collectionData = data.ratingsInfo[key];
           break;
         }
       }
     }
   }
-  return container;
+  return collectionData;
 }
 function generateDomTree(tagName, attributes, children = []) {
   if (!children) {
@@ -286,19 +286,19 @@ function getCollectionPhotoURL(randomInt) {
   xhr.send();
 }
 function chooseWallet() {
-  const container = {
+  const wallet = {
     owner: null,
     addresses: null
   };
   let addresses = '';
-  const randomInt = getRandomNumber(data.owner.length);
-  container.owner = data.owner[randomInt].wallet;
+  const randomInt = getRandomInt(data.owner.length);
+  wallet.owner = data.owner[randomInt].wallet;
   for (let i = 0; i < data.owner[randomInt].projectContract.length; i++) {
     addresses = addresses.concat('&contractAddresses[]=' + data.owner[randomInt].projectContract[i]);
   }
-  container.addresses = addresses;
+  wallet.addresses = addresses;
   data.owner.splice(randomInt, 1);
-  return container;
+  return wallet;
 }
 function appendSuperlikesCardLi() {
   if ($superlikesUl === null) { return; }
