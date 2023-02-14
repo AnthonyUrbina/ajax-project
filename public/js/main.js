@@ -43,7 +43,6 @@ function showFirstNFT() {
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
     data.nftList = xhr.response.ownedNfts.map(nft => {
-      // console.log(nft);
       const { metadata, media, contractMetadata, title, contract } = nft;
       const image = media[0].gateway;
       const { address } = contract;
@@ -60,7 +59,7 @@ function showFirstNFT() {
     });
     data.nftVisible = nftData;
     if (!data.ratingsInfo[collectionData.collectionName]) {
-      getCollectionPhotoURL(randomInt);
+      if ($mainViewImage.complete) { getCollectionPhotoURL(randomInt); }
       data.ratingsInfo[collectionData.collectionName] = collectionData;
     }
     data.nftList.splice(randomInt, 1);
@@ -68,10 +67,12 @@ function showFirstNFT() {
   xhr.send();
 }
 function showNewNFT() {
+  cssLoaderActivate();
   const xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + newCollection.owner);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    cssLoaderActivate();
     if (data.nftList.length > 0) {
       const randomInt = getRandomNumber(data.nftList.length);
       const nftName = data.nftList[randomInt].title;
@@ -93,7 +94,7 @@ function showNewNFT() {
         superlikes: 0
       };
       if (!data.ratingsInfo[collectionData.collectionName]) {
-        throttle(getCollectionPhotoURL(randomInt), 3000);
+        if ($mainViewImage.complete) { getCollectionPhotoURL(randomInt); }
         data.ratingsInfo[collectionData.collectionName] = collectionData;
       }
       data.nftList.splice(randomInt, 1);
@@ -101,10 +102,9 @@ function showNewNFT() {
   });
   xhr.send();
 }
-const handleRatingClick = throttle(function (event) {
+function handleRatingClick(event) {
   const target = event.target;
   if (target.matches('.fa-solid')) {
-    cssLoaderActivate();
     const collectionData = {
       collectionName: data.nftVisible.collectionName,
       likes: 0,
@@ -142,7 +142,7 @@ const handleRatingClick = throttle(function (event) {
       $miniMessageIconSuperlikes.className = '';
     }
   }
-}, 2000);
+}
 function appendMatchCardLi(collectionData) {
   if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
     for (let i = 0; i < $liNodeList.length; i++) {
@@ -284,19 +284,6 @@ function getCollectionPhotoURL(randomInt) {
     data.collectionPhotos[data.nftVisible.collectionName] = parentCollectionPhoto;
   });
   xhr.send();
-}
-function throttle(callback, limit) {
-  let waiting = false;
-  return function () {
-    if (!waiting) {
-      callback.apply(this);
-      waiting = true;
-      setTimeout(function () {
-        cssLoaderActivate();
-        waiting = false;
-      }, limit);
-    }
-  };
 }
 function chooseWallet() {
   const container = {
