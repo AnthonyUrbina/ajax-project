@@ -1,4 +1,4 @@
-/* exported Attributes Data OpenseaData Container */
+/* exported Attributes Data OpenseaData Wallet */
 
 interface Attributes {
   [key: string]: string
@@ -51,7 +51,7 @@ interface OpenseaData {
   contract: { address: string }
 }
 
-interface Container {
+interface Wallet {
   owner: string | null,
   addresses: string | null
 }

@@ -239,7 +239,7 @@ function getRandomNumber(collectionLength: number) {
 }
 
 function findMatch(data: Data): CollectionData {
-  let container: CollectionData = {
+  let collectionData: CollectionData = {
     collectionName: '',
     likes: 0,
     dislikes: 0,
@@ -250,15 +250,15 @@ function findMatch(data: Data): CollectionData {
       if (data.ratingsInfo[key] !== data.ratingsInfo[keys]) {
         if (data.ratingsInfo[key].likes < data.ratingsInfo[keys].likes || data.ratingsInfo[key].likes === null) {
           break;
-        } else if (container.collectionName === '' || data.ratingsInfo[key].likes > container.likes) {
-          container = data.ratingsInfo[key];
+        } else if (collectionData.collectionName === '' || data.ratingsInfo[key].likes > collectionData.likes) {
+          collectionData = data.ratingsInfo[key];
           break;
         }
       }
     }
   }
 
-  return container;
+  return collectionData;
 }
 
 function generateDomTree(tagName: string, attributes: Attributes, children: HTMLElement[] = []) {
@@ -320,19 +320,19 @@ function getCollectionPhotoURL(randomInt: number) {
 }
 
 function chooseWallet() {
-  const container: Container = {
+  const wallet: Wallet = {
     owner: null,
     addresses: null
   };
   let addresses = '';
   const randomInt = getRandomNumber(data.owner.length);
-  container.owner = data.owner[randomInt].wallet;
+  wallet.owner = data.owner[randomInt].wallet;
   for (let i = 0; i < data.owner[randomInt].projectContract.length; i++) {
     addresses = addresses.concat('&contractAddresses[]=' + data.owner[randomInt].projectContract[i]);
   }
-  container.addresses = addresses;
+  wallet.addresses = addresses;
   data.owner.splice(randomInt, 1);
-  return container;
+  return wallet;
 }
 
 function appendSuperlikesCardLi() {
