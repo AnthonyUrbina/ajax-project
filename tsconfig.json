@@ -10,7 +10,7 @@
     "sourceMap": true,
     "inlineSources": true,
     "outDir": "public/js",
-    "rootDirs": ["src/main.ts", "src/data.ts", "src/interfaces.ts"],
+    "rootDirs": ["src/index.tss", "src/data.ts", "src/interfaces.ts"],
     "typeRoots": [
       "node_modules/@types/"
     ]

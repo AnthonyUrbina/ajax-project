@@ -49,8 +49,9 @@
   "overrides": [
     {
       "files": [
-        "public/js/main.js",
-        "public/js/data.js"
+        "public/js/index.js",
+        "public/js/data.js",
+        "public/js/interfaces.js"
       ],
       "globals": {
         "data": "readonly"
