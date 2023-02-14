@@ -49,7 +49,7 @@
   "overrides": [
     {
       "files": [
-        "public/js/index.js",
+        "public/js/main.js",
         "public/js/data.js",
         "public/js/interfaces.js"
       ],
