@@ -328,8 +328,8 @@ function getCollectionPhotoURL(randomInt: number) {
 
 function chooseWallet() {
   const wallet: Wallet = {
-    owner: null,
-    addresses: null
+    owner: '',
+    addresses: ''
   };
   let addresses = '';
   const randomInt = getRandomInt(data.owner.length);
@@ -339,6 +339,7 @@ function chooseWallet() {
   }
   wallet.addresses = addresses;
   data.owner.splice(randomInt, 1);
+
   return wallet;
 }
 
