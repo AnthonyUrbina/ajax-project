@@ -27,12 +27,13 @@ function showFirstNFT() {
   xhr.open('GET', 'https://eth-mainnet.g.alchemy.com/nft/v2/7VSl7jqnLgnd8IhZOmdPbY1nyoFggmIx/getNFTs?owner=' + wallet.owner + wallet.addresses);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    const { ownedNfts } = xhr.response;
     cssLoaderActivate();
-    const randomInt = getRandomInt(xhr.response.ownedNfts.length);
+    const randomInt = getRandomInt(ownedNfts.length);
     const nftData = {
-      name: xhr.response.ownedNfts[randomInt].metadata.name,
-      image: xhr.response.ownedNfts[randomInt].media[0].gateway,
-      collectionName: xhr.response.ownedNfts[randomInt].contractMetadata.name,
+      name: ownedNfts[randomInt].metadata.name,
+      image: ownedNfts[randomInt].media[0].gateway,
+      collectionName: ownedNfts[randomInt].contractMetadata.name,
       hasBeenRated: false
     };
 
@@ -47,7 +48,7 @@ function showFirstNFT() {
     $cardImageDiv.appendChild($mainViewImage);
     $mainViewTitle.textContent = nftData.name;
 
-    data.nftList = xhr.response.ownedNfts.map((nft: OpenseaData) => {
+    data.nftList = ownedNfts.map((nft: OpenseaData) => {
       const { metadata, media, contractMetadata, title, contract } = nft;
       const image = media[0].gateway;
       const { address } = contract;
@@ -84,12 +85,13 @@ function showNewNFT() {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     cssLoaderActivate();
-    if (data.nftList.length > 0) {
-      const randomInt = getRandomInt(data.nftList.length);
+    const { nftList } = data;
+    if (nftList.length > 0) {
+      const randomInt = getRandomInt(nftList.length);
 
-      const nftName = data.nftList[randomInt].title;
-      const nftImage = data.nftList[randomInt].image;
-      const parentCollectionName = data.nftList[randomInt].name;
+      const nftName = nftList[randomInt].title;
+      const nftImage = nftList[randomInt].image;
+      const parentCollectionName = nftList[randomInt].name;
 
       const nftData: NftData = {
         name: nftName,
@@ -114,7 +116,7 @@ function showNewNFT() {
         if ($mainViewImage.complete) getCollectionPhotoURL(randomInt);
         data.ratingsInfo[collectionData.collectionName] = collectionData;
       }
-      data.nftList.splice(randomInt, 1);
+      nftList.splice(randomInt, 1);
     }
 
   });
@@ -238,19 +240,20 @@ function getRandomInt(collectionLength: number) {
 }
 
 function findMatch(data: Data): CollectionData {
+  const { ratingsInfo } = data;
   let collectionData: CollectionData = {
     collectionName: '',
     likes: 0,
     dislikes: 0,
     superlikes: 0
   };
-  for (const key in data.ratingsInfo) {
-    for (const keys in data.ratingsInfo) {
-      if (data.ratingsInfo[key] !== data.ratingsInfo[keys]) {
-        if (data.ratingsInfo[key].likes < data.ratingsInfo[keys].likes || data.ratingsInfo[key].likes === null) {
+  for (const key in ratingsInfo) {
+    for (const keys in ratingsInfo) {
+      if (ratingsInfo[key] !== ratingsInfo[keys]) {
+        if (ratingsInfo[key].likes < ratingsInfo[keys].likes || ratingsInfo[key].likes === null) {
           break;
-        } else if (collectionData.collectionName === '' || data.ratingsInfo[key].likes > collectionData.likes) {
-          collectionData = data.ratingsInfo[key];
+        } else if (collectionData.collectionName === '' || ratingsInfo[key].likes > collectionData.likes) {
+          collectionData = ratingsInfo[key];
           break;
         }
       }
@@ -279,9 +282,10 @@ function generateDomTree(tagName: string, attributes: Attributes, children: HTML
 }
 
 function createMatchCardLi(key: string) {
+  const { ratingsInfo, nftVisible, collectionPhotos } = data;
   let src = 'images/unavail.jpeg';
-  if (data.collectionPhotos[data.nftVisible.collectionName]) {
-    src = data.collectionPhotos[data.nftVisible.collectionName];
+  if (collectionPhotos[nftVisible.collectionName]) {
+    src = collectionPhotos[nftVisible.collectionName];
   }
   return generateDomTree(
     'li', {}, [
@@ -295,8 +299,8 @@ function createMatchCardLi(key: string) {
                     generateDomTree(
                       'div', { class: 'likes-box' }, [
                         generateDomTree(
-                          'p', { textContent: [data.ratingsInfo[key].likes + 1].toString() }), generateDomTree('i', { class: 'fa-solid fa-heart' })]),
-                    generateDomTree('p', { textContent: data.ratingsInfo[key].collectionName })])])]
+                          'p', { textContent: [ratingsInfo[key].likes + 1].toString() }), generateDomTree('i', { class: 'fa-solid fa-heart' })]),
+                    generateDomTree('p', { textContent: ratingsInfo[key].collectionName })])])]
           )])]);
 }
 
@@ -342,9 +346,10 @@ function appendSuperlikesCardLi() {
 }
 
 function createSuperlikesCardLi() {
+  const { nftVisible } = data;
   let src = 'images/unavail.jpeg';
-  if (data.nftVisible.image) {
-    src = data.nftVisible.image;
+  if (nftVisible.image) {
+    src = nftVisible.image;
   }
   return generateDomTree(
     'li',
@@ -363,7 +368,7 @@ function createSuperlikesCardLi() {
           generateDomTree(
             'div',
             { class: 'card-text-wrapper' },
-            [generateDomTree('p', { textContent: data.nftVisible.name })])])]
+            [generateDomTree('p', { textContent: nftVisible.name })])])]
       )])]);
 }
 
