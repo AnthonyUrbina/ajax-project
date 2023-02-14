@@ -34,13 +34,18 @@ interface NftData {
   hasBeenRated?: boolean
 }
 
+interface WalletData {
+wallet: string,
+projectContract: string[]
+}
+
 interface Data {
   nftVisible: NftData,
   ratingsInfo: RatingsInfo,
   superliked: NftData[],
   nftList: NftList[],
   collectionPhotos: CollectionPhotos,
-  owner: { wallet: string, projectContract: string[] }[]
+  owner: WalletData[]
 }
 
 interface OpenseaData {
@@ -53,5 +58,5 @@ interface OpenseaData {
 
 interface Wallet {
   owner: string,
-  addresses: string | null
+  addresses: string
 }
