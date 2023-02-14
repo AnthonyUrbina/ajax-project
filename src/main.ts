@@ -149,11 +149,7 @@ function showNewNFT() {
   xhr.send();
 }
 
-interface HandleRatingClick {
-  (event: MouseEvent): void
-}
-
-function handleRatingClick(event: MouseEvent) {
+function handleRatingClick(event: Event) {
   const target = event.target as HTMLInputElement;
   if (target.matches('.fa-solid')) {
     const collectionData: CollectionData = {
