@@ -15,6 +15,8 @@ const $mainViewImage = document.createElement('img')!;
 const $matchesUl = document.querySelector('.matches-ul')!;
 const $superlikesUl = document.querySelector('.superlikes-ul')!;
 const $cssLoader = document.querySelector('.lds-spinner')!;
+const $errorMessageNodeList = document.querySelectorAll('.no-results')!;
+
 const $dataViewNodeList = document.querySelectorAll<HTMLElement>('[data-view]')!;
 const $liNodeList = document.querySelectorAll<HTMLElement>('li')!;
 
@@ -169,6 +171,7 @@ function handleRatingClick(event: Event) {
 }
 
 function appendMatchCardLi(collectionData: CollectionData) {
+  displayErrorMessages('matches');
   if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
     for (let i = 0; i < $liNodeList.length; i++) {
       const $liTextContent = $liNodeList[i].textContent!.replace(/[0-9]/g, '');
@@ -310,12 +313,13 @@ function getCollectionPhotoURL(randomInt: number) {
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    const { status, response } = xhr;
     let parentCollectionPhoto: string;
 
-    if (xhr.status === 429 || xhr.status === 401) {
+    if (status === 429 || status === 401) {
       parentCollectionPhoto = 'images/unavail.jpeg';
     } else {
-      parentCollectionPhoto = xhr.response.image_url;
+      parentCollectionPhoto = response.image_url;
     }
     data.collectionPhotos[data.nftVisible.collectionName] = parentCollectionPhoto;
   });
@@ -339,8 +343,7 @@ function chooseWallet() {
 }
 
 function appendSuperlikesCardLi() {
-  if ($superlikesUl === null) return;
-
+  displayErrorMessages('superlikes');
   const $li = createSuperlikesCardLi();
   $superlikesUl.appendChild($li);
 }
@@ -373,11 +376,17 @@ function createSuperlikesCardLi() {
 }
 
 function cssLoaderActivate() {
-  if ($cssLoader === null) return;
   if ($cssLoader.className === 'lds-spinner') {
     $cssLoader.className = 'lds-spinner hidden';
   } else if ($cssLoader.className === 'lds-spinner hidden') {
-    if ($cssLoader === null) return;
     $cssLoader.className = 'lds-spinner';
+  }
+}
+
+function displayErrorMessages(view: string) {
+  for (let i = 0; i < $errorMessageNodeList.length; i++) {
+    if ($errorMessageNodeList[i].classList.contains(view)) {
+      $errorMessageNodeList[i].className = 'hidden';
+    }
   }
 }

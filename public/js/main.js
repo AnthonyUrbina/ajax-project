@@ -15,6 +15,7 @@ const $mainViewImage = document.createElement('img');
 const $matchesUl = document.querySelector('.matches-ul');
 const $superlikesUl = document.querySelector('.superlikes-ul');
 const $cssLoader = document.querySelector('.lds-spinner');
+const $errorMessageNodeList = document.querySelectorAll('.no-results');
 const $dataViewNodeList = document.querySelectorAll('[data-view]');
 const $liNodeList = document.querySelectorAll('li');
 let wallet;
@@ -146,6 +147,7 @@ function handleRatingClick(event) {
   }
 }
 function appendMatchCardLi(collectionData) {
+  displayErrorMessages('matches');
   if (data.ratingsInfo[collectionData.collectionName].likes >= 1) {
     for (let i = 0; i < $liNodeList.length; i++) {
       const $liTextContent = $liNodeList[i].textContent.replace(/[0-9]/g, '');
@@ -279,11 +281,12 @@ function getCollectionPhotoURL(randomInt) {
   xhr.setRequestHeader('X-API-KEY', '31e0cc50c1284711abc9837ebf5a5ecd');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    const { status, response } = xhr;
     let parentCollectionPhoto;
-    if (xhr.status === 429 || xhr.status === 401) {
+    if (status === 429 || status === 401) {
       parentCollectionPhoto = 'images/unavail.jpeg';
     } else {
-      parentCollectionPhoto = xhr.response.image_url;
+      parentCollectionPhoto = response.image_url;
     }
     data.collectionPhotos[data.nftVisible.collectionName] = parentCollectionPhoto;
   });
@@ -305,7 +308,7 @@ function chooseWallet() {
   return wallet;
 }
 function appendSuperlikesCardLi() {
-  if ($superlikesUl === null) { return; }
+  displayErrorMessages('superlikes');
   const $li = createSuperlikesCardLi();
   $superlikesUl.appendChild($li);
 }
@@ -319,12 +322,17 @@ function createSuperlikesCardLi() {
     generateDomTree('div', { class: 'card-text-wrapper' }, [generateDomTree('p', { textContent: nftVisible.name })])])])])]);
 }
 function cssLoaderActivate() {
-  if ($cssLoader === null) { return; }
   if ($cssLoader.className === 'lds-spinner') {
     $cssLoader.className = 'lds-spinner hidden';
   } else if ($cssLoader.className === 'lds-spinner hidden') {
-    if ($cssLoader === null) { return; }
     $cssLoader.className = 'lds-spinner';
+  }
+}
+function displayErrorMessages(view) {
+  for (let i = 0; i < $errorMessageNodeList.length; i++) {
+    if ($errorMessageNodeList[i].classList.contains(view)) {
+      $errorMessageNodeList[i].className = 'hidden';
+    }
   }
 }
 // # sourceMappingURL=main.js.map
