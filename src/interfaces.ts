@@ -6,8 +6,8 @@ interface Attributes {
 
 interface CollectionData {
   collectionName: string,
-  likes: number
-  dislikes: number
+  likes: number,
+  dislikes: number,
   superlikes: number
 }
 
@@ -34,13 +34,18 @@ interface NftData {
   hasBeenRated?: boolean
 }
 
+interface WalletData {
+wallet: string,
+projectContract: string[]
+}
+
 interface Data {
-  nftVisible: NftData
-  ratingsInfo: RatingsInfo | Record<string, never>
+  nftVisible: NftData,
+  ratingsInfo: RatingsInfo,
   superliked: NftData[],
   nftList: NftList[],
-  collectionPhotos: CollectionPhotos | Record<string, never>,
-  owner: { wallet: string, projectContract: string[] }[]
+  collectionPhotos: CollectionPhotos,
+  owner: WalletData[]
 }
 
 interface OpenseaData {
@@ -52,6 +57,6 @@ interface OpenseaData {
 }
 
 interface Wallet {
-  owner: string | null,
-  addresses: string | null
+  owner: string,
+  addresses: string
 }
