@@ -242,7 +242,7 @@ function getRandomInt(collectionLength: number) {
   return integer;
 }
 
-function findMatch(data: Data): CollectionData {
+function findMatch(data: Data) {
   const { ratingsInfo } = data;
   let collectionData: CollectionData = {
     collectionName: '',
